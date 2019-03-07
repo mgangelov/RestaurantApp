@@ -2,10 +2,14 @@ package com.bham.restaurantapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.bham.restaurantapp.R;
+import com.bham.restaurantapp.adapter.EstablishmentAdapter;
 import com.bham.restaurantapp.adapter.RegionAdapter;
+import com.bham.restaurantapp.model.Establishment;
+import com.bham.restaurantapp.model.EstablishmentResult;
 import com.bham.restaurantapp.model.Region;
 import com.bham.restaurantapp.model.RegionResult;
 import com.bham.restaurantapp.rest.FsaApiInterface;
@@ -57,20 +61,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FsaApiInterface fsaAPI = retrofit.create(FsaApiInterface.class);
-        Call<RegionResult> call = fsaAPI.getRegions();
-        call.enqueue(new Callback<RegionResult>() {
+        Call<EstablishmentResult> call = fsaAPI.getEstablishments(1, 10);
+        call.enqueue(new Callback<EstablishmentResult>() {
             @Override
-            public void onResponse(Call<RegionResult> call, retrofit2.Response<RegionResult> response) {
-                System.out.println("HAHA: " + response.body().getRegions().get(0).getName());
-                List<Region> regions = response.body().getRegions();
-                listView.setAdapter(new RegionAdapter(getApplicationContext(), R.layout.activity_main, regions));
+            public void onResponse(Call<EstablishmentResult> call, retrofit2.Response<EstablishmentResult> response) {
+                Log.i("establishment_result", "Business name: " + response.body().getEstablishments().get(0).getBusinessName());
+                Log.i("establishment_result", "Rating: " + response.body().getEstablishments().get(0).getRatingValue());
+                List<Establishment> establishments = response.body().getEstablishments();
+                listView.setAdapter(new EstablishmentAdapter(getApplicationContext(), R.layout.activity_main, establishments));
             }
 
             @Override
-            public void onFailure(Call<RegionResult> call, Throwable t) {
+            public void onFailure(Call<EstablishmentResult> call, Throwable t) {
                 t.printStackTrace();
             }
         });
+//        Call<RegionResult> call = fsaAPI.getRegions();
+//        call.enqueue(new Callback<RegionResult>() {
+//            @Override
+//            public void onResponse(Call<RegionResult> call, retrofit2.Response<RegionResult> response) {
+//                System.out.println("HAHA: " + response.body().getRegions().get(0).getName());
+//                List<Region> regions = response.body().getRegions();
+//                listView.setAdapter(new RegionAdapter(getApplicationContext(), R.layout.activity_main, regions));
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RegionResult> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
 
     }
 }

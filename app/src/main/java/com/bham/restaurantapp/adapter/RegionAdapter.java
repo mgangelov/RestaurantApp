@@ -16,14 +16,12 @@ import java.util.List;
 
 public class RegionAdapter extends ArrayAdapter<Region> {
     private Context context;
-    private int resource;
     private List<Region> regionsList;
 
 
     public RegionAdapter(@NonNull Context context, int resource, @NonNull List<Region> objects) {
         super(context, resource, objects);
         this.context = context;
-        this.resource = resource;
         this.regionsList = objects;
     }
 
