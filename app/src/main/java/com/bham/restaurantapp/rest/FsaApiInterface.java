@@ -16,4 +16,10 @@ public interface FsaApiInterface {
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize
     );
+
+    @GET("establishments")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("maxdistancelimit") int maxDistanceLimit
+    );
 }

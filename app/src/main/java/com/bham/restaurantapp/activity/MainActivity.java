@@ -1,17 +1,14 @@
 package com.bham.restaurantapp.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.adapter.EstablishmentAdapter;
-import com.bham.restaurantapp.adapter.RegionAdapter;
 import com.bham.restaurantapp.model.Establishment;
 import com.bham.restaurantapp.model.EstablishmentResult;
-import com.bham.restaurantapp.model.Region;
-import com.bham.restaurantapp.model.RegionResult;
 import com.bham.restaurantapp.rest.FsaApiInterface;
 
 import java.io.IOException;
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FsaApiInterface fsaAPI = retrofit.create(FsaApiInterface.class);
-        Call<EstablishmentResult> call = fsaAPI.getEstablishments(1, 10);
+        Call<EstablishmentResult> call = fsaAPI.getEstablishments("B15 2TT", 3);
         call.enqueue(new Callback<EstablishmentResult>() {
             @Override
             public void onResponse(Call<EstablishmentResult> call, retrofit2.Response<EstablishmentResult> response) {
