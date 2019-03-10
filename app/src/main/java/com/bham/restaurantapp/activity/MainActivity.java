@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.bham.restaurantapp.R;
-import com.bham.restaurantapp.adapter.EstablishmentAdapter;
+import com.bham.restaurantapp.adapter.EstablishmentArrayAdapter;
 import com.bham.restaurantapp.model.Establishment;
 import com.bham.restaurantapp.model.EstablishmentResult;
 import com.bham.restaurantapp.rest.FsaApiInterface;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("establishment_result", "Business name: " + response.body().getEstablishments().get(0).getBusinessName());
                 Log.i("establishment_result", "Rating: " + response.body().getEstablishments().get(0).getRatingValue());
                 List<Establishment> establishments = response.body().getEstablishments();
-                listView.setAdapter(new EstablishmentAdapter(getApplicationContext(), R.layout.activity_main, establishments));
+                listView.setAdapter(new EstablishmentArrayAdapter(getApplicationContext(), R.layout.activity_main, establishments));
             }
 
             @Override

@@ -1,9 +1,11 @@
-package com.bham.restaurantapp;
+package com.bham.restaurantapp.activity;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.bham.restaurantapp.R;
 
 public class EstablishmentListViewActivity extends AppCompatActivity {
 

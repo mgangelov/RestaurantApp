@@ -1,43 +1,52 @@
 package com.bham.restaurantapp.adapter;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-
 import android.widget.TextView;
+
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.model.Establishment;
 
 import java.util.List;
 
-public class EstablishmentAdapter extends ArrayAdapter<Establishment> {
-    private Context context;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdapter.MyViewHolder> {
     private List<Establishment> establishmentsList;
 
-
-    public EstablishmentAdapter(@NonNull Context context, int resource, @NonNull List<Establishment> objects) {
-        super(context, resource, objects);
-        this.context = context;
-        this.establishmentsList = objects;
+    public EstablishmentAdapter(List<Establishment> establishmentsList) {
+        this.establishmentsList = establishmentsList;
     }
+
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItem = convertView;
-        if (listItem == null)
-            listItem = LayoutInflater.from(this.context).inflate(R.layout.establishment_list_item, parent, false);
-
-        Establishment establishment = this.establishmentsList.get(position);
-        TextView establishmentNameTextView = listItem.findViewById(R.id.establishmentNameTextView);
-        establishmentNameTextView.setText(String.format("Name: %s", establishment.getBusinessName()));
-        TextView establishmentRatingTextView = listItem.findViewById(R.id.establishmentRatingTextView);
-        establishmentRatingTextView.setText(String.format("Rating: %s", establishment.getRatingValue()));
-
-        return listItem;
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        TextView v = (TextView) LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.test_text_view, parent, false);
+        MyViewHolder vh = new MyViewHolder(v);
+        return vh;
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.textView.setText(establishmentsList.get(position).getBusinessName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.establishmentsList.size();
+    }
+
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView textView;
+
+        MyViewHolder(@NonNull TextView itemView) {
+            super(itemView);
+            textView = itemView;
+        }
+    }
+
 }
