@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".activity.ViewAllEstablishmentsActivity" />
         <activity android:name=".activity.EstablishmentListViewActivity" />
         <activity android:name=".activity.SearchScreenActivity">
@@ -22,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

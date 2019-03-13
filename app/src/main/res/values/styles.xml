@@ -13,4 +13,13 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
+
+    <style name="EstablishmentRating" parent="@android:style/Widget.RatingBar">
+        <!--<item name="android:minHeight">32dip</item>-->
+        <!--<item name="android:minWidth">36dip</item>-->
+        <!--<item name="android:minHeight">12sp</item>-->
+        <!--<item name="android:minWidth">16sp</item>-->
+        <item name="android:progressDrawable">@drawable/rating_bar_icon</item>
+    </style>
+
 </resources>

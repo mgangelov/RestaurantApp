@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/all_establishments_text_view_text"
-        app:layout_constraintBottom_toTopOf="@id/regionsListView"
+        app:layout_constraintBottom_toTopOf="@id/testRecyclerView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

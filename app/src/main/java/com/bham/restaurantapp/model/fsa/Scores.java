@@ -1,4 +1,4 @@
-package com.bham.restaurantapp.model;
+package com.bham.restaurantapp.model.fsa;
 
 import com.google.gson.annotations.SerializedName;
 

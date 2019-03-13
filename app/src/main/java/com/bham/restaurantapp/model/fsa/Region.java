@@ -1,4 +1,4 @@
-package com.bham.restaurantapp.model;
+package com.bham.restaurantapp.model.fsa;
 
 public class Region {
     private int id;

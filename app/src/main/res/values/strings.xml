@@ -8,4 +8,5 @@
     <string name="all_establishments_next_page_button_text">Next Page</string>
     <string name="search_field_text_hint">Enter address</string>
     <string name="add_search_filters_button_text">Add filters</string>
+    <string name="establishmentsListSearchTitleTextView">Establishments found:</string>
 </resources>

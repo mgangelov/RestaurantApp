@@ -1,4 +1,4 @@
-package com.bham.restaurantapp.model;
+package com.bham.restaurantapp.model.fsa;
 
 import java.util.List;
 

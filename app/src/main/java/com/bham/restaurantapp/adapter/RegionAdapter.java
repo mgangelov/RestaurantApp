@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bham.restaurantapp.R;
-import com.bham.restaurantapp.model.Region;
+import com.bham.restaurantapp.model.fsa.Region;
 
 import java.util.List;
 
