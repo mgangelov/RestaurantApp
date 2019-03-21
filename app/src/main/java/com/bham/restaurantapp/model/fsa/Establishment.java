@@ -10,7 +10,7 @@ public class Establishment implements Parcelable {
     private String fhrsId;
     @SerializedName("BusinessName")
     private String businessName;
-    @SerializedName("BusinessType")
+    @SerializedName("BusinessTypeEntity")
     private String businessType;
     @SerializedName("AddressLine1")
     private String addressLine1;

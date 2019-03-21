@@ -1,5 +1,6 @@
 package com.bham.restaurantapp.rest;
 
+import com.bham.restaurantapp.model.fsa.BusinessTypeResult;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
 import com.bham.restaurantapp.model.fsa.RegionResult;
 
@@ -17,12 +18,15 @@ public interface FsaApiInterface {
             @Query("pagesize") int pageSize
     );
 
-    @GET("establishments")
+    @GET("establishments/?countryid=1")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
-            @Query("pagesize") int pageSize
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit
     );
 
+    @GET("businesstypes/basic")
+    Call<BusinessTypeResult> getBusinessTypes();
 }

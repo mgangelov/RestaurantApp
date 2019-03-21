@@ -1,4 +1,4 @@
-package com.bham.restaurantapp.background;
+package com.bham.restaurantapp.background.controller;
 
 import com.bham.restaurantapp.model.postcodes.Coordinate;
 import com.bham.restaurantapp.model.postcodes.PostcodeResult;
@@ -15,7 +15,11 @@ public class PostcodeDataController {
     private Retrofit retrofit;
     private final String BASE_URL = "http://api.postcodes.io/";
 
-    public Coordinate convertPostcodeToCoordinates(String postcode) {
+    public PostcodeDataController() {
+        this.retrofit = null;
+    }
+
+    public Coordinate convertPostcodeToCoordinates(String postcode) throws IOException {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
@@ -24,11 +28,6 @@ public class PostcodeDataController {
         }
         PostcodeIoApiInterface postcodeAPI = retrofit.create(PostcodeIoApiInterface.class);
         Call<PostcodeResult> call = postcodeAPI.getInfoForPostcode(postcode);
-        try {
-            return Objects.requireNonNull(call.execute().body()).getResult().getCoordinate();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return Objects.requireNonNull(call.execute().body()).getResult().getCoordinate();
     }
 }

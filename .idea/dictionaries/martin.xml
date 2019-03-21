@@ -1,8 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="martin">
     <words>
+      <w>businesstypes</w>
+      <w>countryid</w>
       <w>fhrs</w>
       <w>fhrsid</w>
+      <w>maxdistance</w>
       <w>maxdistancelimit</w>
       <w>pagenumber</w>
       <w>pagesize</w>
