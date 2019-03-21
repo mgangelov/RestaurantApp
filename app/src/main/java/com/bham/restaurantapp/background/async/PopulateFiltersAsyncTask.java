@@ -3,52 +3,120 @@ package com.bham.restaurantapp.background.async;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.bham.restaurantapp.model.db.FsaDatabase;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.room.Room;
 
 import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 
-public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, Cursor> {
+public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>> {
+    private static final String TAG = "PopulateFiltersAsyncTask";
     private WeakReference<Context> applicationContext;
     private WeakReference<Spinner> businessTypesSpinner;
+    private WeakReference<Spinner> regionSpinner;
+    private WeakReference<Spinner> authoritySpinner;
+    private FsaDatabase db;
 
     public PopulateFiltersAsyncTask(
-            Context applicationContext, Spinner businessTypesSpinner
+            Context applicationContext,
+            Spinner businessTypesSpinner,
+            Spinner regionSpinner,
+            Spinner authoritySpinner
     ) {
         this.applicationContext = new WeakReference<>(applicationContext);
         this.businessTypesSpinner = new WeakReference<>(businessTypesSpinner);
-    }
-
-    @Override
-    protected Cursor doInBackground(Void... voids) {
-        FsaDatabase db = Room.databaseBuilder(
-                applicationContext.get(),
+        this.regionSpinner = new WeakReference<>(regionSpinner);
+        this.authoritySpinner = new WeakReference<>(authoritySpinner);
+        this.db = Room.databaseBuilder(
+                applicationContext,
                 FsaDatabase.class,
                 "database")
                 .build();
-        return db.businessTypeDAO().getAllCursor();
     }
 
     @Override
-    protected void onPostExecute(Cursor cursor) {
+    protected List<Cursor> doInBackground(Void... voids) {
+        List<Cursor> cursors = new ArrayList<>();
+        cursors.add(db.businessTypeDAO().getAllCursor());
+        cursors.add(db.regionDAO().getAllCursor());
+        cursors.add(db.authorityDAO().getAllFilteredCursor());
+        return cursors;
+    }
+
+    @Override
+    protected void onPostExecute(List<Cursor> cursor) {
         super.onPostExecute(cursor);
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+
+        SimpleCursorAdapter authoritiesAdapter = new SimpleCursorAdapter(
                 applicationContext.get(),
                 android.R.layout.simple_spinner_dropdown_item,
-                cursor,
-                new String[] { "business_type_name" },
-                new int[] { android.R.id.text1 },
+                cursor.get(2),
+                new String[]{"authority_name"},
+                new int[]{android.R.id.text1},
                 FLAG_REGISTER_CONTENT_OBSERVER
         );
-        adapter.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item
-        );
-        businessTypesSpinner.get().setAdapter(adapter);
+        authoritiesAdapter.setFilterQueryProvider(filterQueryProvider);
+        authoritySpinner.get().setAdapter(authoritiesAdapter);
+
+
+
+        businessTypesSpinner.get().setAdapter(new SimpleCursorAdapter(
+                applicationContext.get(),
+                android.R.layout.simple_spinner_dropdown_item,
+                cursor.get(0),
+                new String[]{"business_type_name"},
+                new int[]{android.R.id.text1},
+                FLAG_REGISTER_CONTENT_OBSERVER
+        ));
+        regionSpinner.get().setAdapter(new SimpleCursorAdapter(
+                applicationContext.get(),
+                android.R.layout.simple_spinner_dropdown_item,
+                cursor.get(1),
+                new String[]{"region_name"},
+                new int[]{android.R.id.text1},
+                FLAG_REGISTER_CONTENT_OBSERVER
+        ));
+        regionSpinner.get().setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SimpleCursorAdapter authoritySpinnerAdapter = (SimpleCursorAdapter) authoritySpinner.get().getAdapter();
+                Cursor selectedRegion = (Cursor) parent.getAdapter().getItem(position);
+                Integer selectedRegionId = selectedRegion.getInt(selectedRegion.getColumnIndex("_id"));
+                Log.i(TAG, String.format("Filtering authorities for region %s", selectedRegionId));
+                if (selectedRegionId == 99)
+                    authoritySpinner.get().setSelection(1);
+                else
+                    authoritySpinner.get().setSelection(0);
+                authoritySpinnerAdapter.getFilter().filter(selectedRegionId.toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        businessTypesSpinner.get().setSelection(0);
+        regionSpinner.get().setSelection(0);
     }
+
+    private FilterQueryProvider filterQueryProvider = constraint -> {
+        if (Integer.parseInt(constraint.toString()) == 99) {
+            return db.authorityDAO().getAllFilteredCursor();
+        }
+
+        else return db.authorityDAO().findAuthorityByRegionId(
+                Integer.parseInt(constraint.toString()));
+    };
 }

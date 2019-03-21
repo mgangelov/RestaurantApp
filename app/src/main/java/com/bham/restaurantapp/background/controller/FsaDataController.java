@@ -2,8 +2,10 @@ package com.bham.restaurantapp.background.controller;
 
 import android.util.Log;
 
+import com.bham.restaurantapp.model.fsa.AuthorityResult;
 import com.bham.restaurantapp.model.fsa.BusinessTypeResult;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
+import com.bham.restaurantapp.model.fsa.RegionResult;
 import com.bham.restaurantapp.rest.FsaApiInterface;
 
 import java.io.IOException;
@@ -63,6 +65,14 @@ public class FsaDataController {
 
     public BusinessTypeResult getBusinessTypes() throws IOException {
         return connectToFsaApi().getBusinessTypes().execute().body();
+    }
+
+    public RegionResult getRegions() throws IOException {
+        return connectToFsaApi().getRegions().execute().body();
+    }
+
+    public AuthorityResult getAuthorities() throws IOException {
+        return connectToFsaApi().getAuthorities().execute().body();
     }
 
     public FsaApiInterface connectToFsaApi() {

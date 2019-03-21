@@ -15,10 +15,10 @@ public interface BusinessTypeDAO {
     @Query("select * from businesstypeentity")
     List<BusinessTypeEntity> getAll();
 
-    @Query("select * from businesstypeentity")
+    @Query("select * from businesstypeentity order by business_type_name asc")
     Cursor getAllCursor();
 
-    @Query("select * from businesstypeentity where business_type_id like :btId")
+    @Query("select * from businesstypeentity where _id like :btId")
     BusinessTypeEntity findBusinessTypeById(int btId);
 
     @Insert

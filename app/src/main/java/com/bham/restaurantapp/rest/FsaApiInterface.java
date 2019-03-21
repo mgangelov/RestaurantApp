@@ -1,5 +1,6 @@
 package com.bham.restaurantapp.rest;
 
+import com.bham.restaurantapp.model.fsa.AuthorityResult;
 import com.bham.restaurantapp.model.fsa.BusinessTypeResult;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
 import com.bham.restaurantapp.model.fsa.RegionResult;
@@ -29,4 +30,7 @@ public interface FsaApiInterface {
 
     @GET("businesstypes/basic")
     Call<BusinessTypeResult> getBusinessTypes();
+
+    @GET("authorities")
+    Call<AuthorityResult> getAuthorities();
 }

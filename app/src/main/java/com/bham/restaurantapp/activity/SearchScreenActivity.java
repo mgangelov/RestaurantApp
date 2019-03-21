@@ -41,7 +41,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         AlertDialog.Builder confirmationAlertDialog = new AlertDialog.Builder(this);
         confirmationAlertDialog.setTitle("Refresh DB");
         confirmationAlertDialog.setMessage("Are you sure you want to refresh database?" +
-                "This will delete all data, including favourites");
+                "This will delete all database data.");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
