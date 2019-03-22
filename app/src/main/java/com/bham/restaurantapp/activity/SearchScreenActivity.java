@@ -3,25 +3,46 @@ package com.bham.restaurantapp.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.RefreshDbAsyncTask;
+import com.google.android.material.button.MaterialButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SearchScreenActivity extends AppCompatActivity {
+    private static final String TAG = "SearchScreenActivity";
+    EditText establishmentSearchEditText;
+    private int businessType;
+    private int region;
+    private int authority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
+        establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
+        Log.i(TAG, "Recreating activity");
+        businessType = getIntent().getIntExtra("businessType", -1);
+        region = getIntent().getIntExtra("region", 99);
+        authority = getIntent().getIntExtra("authority", 8999);
+        if (businessType != -1 || region != 99 || authority != 8999) {
+            Log.i(TAG, "Entered if statement");
+            MaterialButton addFiltersButton = findViewById(R.id.addSearchFiltersButton);
+            addFiltersButton.setText(
+                    getString(R.string.search_filters_button_modify_filters)
+            );
+        }
     }
 
+
+
     public void sendEstablishmentSearchEnquiry(View view) {
-        EditText establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
         Intent sendSearchValueIntent = new Intent(this, EstablishmentListViewActivity.class);
         sendSearchValueIntent.putExtra("searchValue", establishmentSearchEditText.getText().toString());
         startActivity(sendSearchValueIntent);
@@ -57,6 +78,34 @@ public class SearchScreenActivity extends AppCompatActivity {
 
     public void openSearchFiltersActivity(View view) {
         Intent openSearchFiltersIntent = new Intent(this, SearchFiltersActivity.class);
+        openSearchFiltersIntent.putExtra("businessType", businessType);
+        openSearchFiltersIntent.putExtra("region", region);
+        openSearchFiltersIntent.putExtra("authority", authority);
+        openSearchFiltersIntent.putExtra(
+                "businessTypePosition",
+                getIntent().getIntExtra("businessTypePosition", 0)
+        );
+        openSearchFiltersIntent.putExtra(
+                "regionPosition",
+                getIntent().getIntExtra("regionPosition", 0)
+        );
+        openSearchFiltersIntent.putExtra(
+                "authorityPosition",
+                getIntent().getIntExtra("authorityPosition", 0)
+        );
         startActivity(openSearchFiltersIntent);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("searchTerm", establishmentSearchEditText.getText().toString());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        establishmentSearchEditText.setText(savedInstanceState.getString("searchTerm"));
+
     }
 }

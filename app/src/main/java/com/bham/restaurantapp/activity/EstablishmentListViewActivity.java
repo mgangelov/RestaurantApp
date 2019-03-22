@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bham.restaurantapp.R;
-import com.bham.restaurantapp.background.async.AsyncResponseInterface;
 import com.bham.restaurantapp.background.async.EstablishmentsAsyncTask;
 import com.bham.restaurantapp.background.async.PostcodeAsyncTask;
-import com.bham.restaurantapp.model.postcodes.Coordinate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,28 +40,25 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
         String postcode = receiveSearchValueIntent.getStringExtra("searchValue");
 
         new PostcodeAsyncTask(
-                new AsyncResponseInterface<Coordinate>() {
-                    @Override
-                    public void processResponse(Coordinate convertedPostcode) {
-                        // Store the converted coordinate to shared preferences
-                        SharedPreferences.Editor preferencesEditor =
-                                getPreferences(MODE_PRIVATE).edit();
-                        preferencesEditor.putString(
-                                "longitude", convertedPostcode.longitude
-                        );
-                        preferencesEditor.putString(
-                                "latitude", convertedPostcode.latitude
-                        );
-                        preferencesEditor.apply();
-                        new EstablishmentsAsyncTask(rView, pageNumberTextView)
-                                .execute(
-                                        convertedPostcode.longitude,
-                                        convertedPostcode.latitude,
-                                        String.valueOf(1),
-                                        String.valueOf(pageNumber),
-                                        String.valueOf(pageSize)
-                                );
-                    }
+                convertedPostcode -> {
+                    // Store the converted coordinate to shared preferences
+                    SharedPreferences.Editor preferencesEditor =
+                            this.preferences.edit();
+                    preferencesEditor.putString(
+                            "longitude", convertedPostcode.longitude
+                    );
+                    preferencesEditor.putString(
+                            "latitude", convertedPostcode.latitude
+                    );
+                    preferencesEditor.apply();
+                    new EstablishmentsAsyncTask(rView, pageNumberTextView)
+                            .execute(
+                                    convertedPostcode.longitude,
+                                    convertedPostcode.latitude,
+                                    String.valueOf(1),
+                                    String.valueOf(pageNumber),
+                                    String.valueOf(pageSize)
+                            );
                 }
         ).execute(postcode);
     }

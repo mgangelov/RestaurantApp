@@ -27,12 +27,18 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
     private WeakReference<Spinner> regionSpinner;
     private WeakReference<Spinner> authoritySpinner;
     private FsaDatabase db;
+    private int existingBusinessTypePosition;
+    private int existingRegionPosition;
+    private int existingAuthorityPosition;
 
     public PopulateFiltersAsyncTask(
             Context applicationContext,
             Spinner businessTypesSpinner,
             Spinner regionSpinner,
-            Spinner authoritySpinner
+            Spinner authoritySpinner,
+            int existingBusinessTypePosition,
+            int existingRegionPosition,
+            int existingAuthorityPosition
     ) {
         this.applicationContext = new WeakReference<>(applicationContext);
         this.businessTypesSpinner = new WeakReference<>(businessTypesSpinner);
@@ -43,6 +49,9 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
                 FsaDatabase.class,
                 "database")
                 .build();
+        this.existingBusinessTypePosition = existingBusinessTypePosition;
+        this.existingRegionPosition = existingRegionPosition;
+        this.existingAuthorityPosition = existingAuthorityPosition;
     }
 
     @Override
@@ -92,13 +101,15 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SimpleCursorAdapter authoritySpinnerAdapter = (SimpleCursorAdapter) authoritySpinner.get().getAdapter();
                 Cursor selectedRegion = (Cursor) parent.getAdapter().getItem(position);
-                Integer selectedRegionId = selectedRegion.getInt(selectedRegion.getColumnIndex("_id"));
+                int selectedRegionId = selectedRegion.getInt(selectedRegion.getColumnIndex("_id"));
                 Log.i(TAG, String.format("Filtering authorities for region %s", selectedRegionId));
                 if (selectedRegionId == 99)
                     authoritySpinner.get().setSelection(1);
+                else if (existingAuthorityPosition != 0)
+                    authoritySpinner.get().setSelection(existingAuthorityPosition);
                 else
                     authoritySpinner.get().setSelection(0);
-                authoritySpinnerAdapter.getFilter().filter(selectedRegionId.toString());
+                authoritySpinnerAdapter.getFilter().filter(Integer.toString(selectedRegionId));
             }
 
             @Override
@@ -107,8 +118,9 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
             }
         });
 
-        businessTypesSpinner.get().setSelection(0);
-        regionSpinner.get().setSelection(0);
+        businessTypesSpinner.get().setSelection(existingBusinessTypePosition);
+        regionSpinner.get().setSelection(existingRegionPosition);
+        authoritySpinner.get().setSelection(existingAuthorityPosition);
     }
 
     private FilterQueryProvider filterQueryProvider = constraint -> {

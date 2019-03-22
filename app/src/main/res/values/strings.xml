@@ -17,4 +17,6 @@
     <string name="submit_filters_button_text">Submit</string>
     <string name="clear_filters_button_text">Clear changes</string>
     <string name="authorities_text_view">Authorities</string>
+    <string name="search_filters_button_modify_filters">Modify filters</string>
+    <string name="filters_selected_text">%d filters selected.</string>
 </resources>

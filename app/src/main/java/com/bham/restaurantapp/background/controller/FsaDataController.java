@@ -51,6 +51,7 @@ public class FsaDataController {
         Call<EstablishmentResult> call;
         if (longitude == null && latitude == null) {
             Log.i(TAG, "Reached all establishments request");
+            Log.i(TAG, String.format("Page number is %d and page size is %d", pageNumber, pageSize));
             call = fsaAPI.getEstablishments(pageNumber, pageSize);
         }
         else if (maxDistance == 0) {
