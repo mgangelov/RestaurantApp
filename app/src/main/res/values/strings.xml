@@ -20,4 +20,5 @@
     <string name="search_filters_button_modify_filters">Modify filters</string>
     <string name="filters_selected_text">%d filters selected.</string>
     <string name="max_distance_limit_text_view">Maximum distance</string>
+    <string name="sort_by_text_view">Sort by:</string>
 </resources>

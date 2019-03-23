@@ -41,6 +41,6 @@ public interface AuthorityDAO {
     void insertAuthorityEntity(AuthorityEntity ae);
 
     @Query("delete from authorityentity")
-    void deleteAllAuthorityEntries();
+    void deleteAllAuthorityEntities();
 
 }

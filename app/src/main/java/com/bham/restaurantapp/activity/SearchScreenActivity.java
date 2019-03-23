@@ -2,13 +2,16 @@ package com.bham.restaurantapp.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.RefreshDbAsyncTask;
+import com.bham.restaurantapp.background.async.SearchScreenAsyncTask;
 import com.google.android.material.button.MaterialButton;
 
 import androidx.annotation.NonNull;
@@ -17,7 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SearchScreenActivity extends AppCompatActivity {
     private static final String TAG = "SearchScreenActivity";
-    EditText establishmentSearchEditText;
+    private EditText establishmentSearchEditText;
+    private Spinner sortBySpinner;
     private int businessType;
     private int region;
     private int authority;
@@ -27,6 +31,13 @@ public class SearchScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
+        sortBySpinner = findViewById(R.id.sortBySpinner);
+        new SearchScreenAsyncTask(
+                getApplicationContext(),
+                sortBySpinner,
+                getIntent().getFloatExtra("maxDistanceLimit", 3)
+        )
+                .execute();
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
         if (savedInstanceState != null)
             establishmentSearchEditText.setText(savedInstanceState.getString("searchValue"));
@@ -57,11 +68,27 @@ public class SearchScreenActivity extends AppCompatActivity {
         sendSearchValueIntent.putExtra("region", region);
         sendSearchValueIntent.putExtra("authority", authority);
         sendSearchValueIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
+
+        Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
+        sendSearchValueIntent.putExtra(
+                "sortOption",
+                sortByCursor.getInt(sortByCursor.getColumnIndex("sort_option_key"))
+        );
+
         startActivity(sendSearchValueIntent);
     }
 
     public void viewAllEstablishmentsEnquiry(View view) {
         Intent viewAllEstablishmentsIntent = new Intent(this, ViewAllEstablishmentsActivity.class);
+        Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
+        Log.i(TAG, "viewAllEstablishmentsEnquiry: spinner position is " + sortBySpinner.getSelectedItem());
+        String test = sortByCursor.getString(sortByCursor.getColumnIndex("sort_option_key"));
+        Log.i(TAG, "viewAllEstablishmentsEnquiry: Sort option is " + test);
+        viewAllEstablishmentsIntent.putExtra(
+                "sortOptionKey",
+                sortByCursor.getString(sortByCursor.getColumnIndex("sort_option_key"))
+        );
+
         startActivity(viewAllEstablishmentsIntent);
     }
 

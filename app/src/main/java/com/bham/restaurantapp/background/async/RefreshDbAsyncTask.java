@@ -9,9 +9,11 @@ import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.db.entities.AuthorityEntity;
 import com.bham.restaurantapp.model.db.entities.BusinessTypeEntity;
 import com.bham.restaurantapp.model.db.entities.RegionEntity;
+import com.bham.restaurantapp.model.db.entities.SortOptionEntity;
 import com.bham.restaurantapp.model.fsa.Authority;
 import com.bham.restaurantapp.model.fsa.BusinessType;
 import com.bham.restaurantapp.model.fsa.Region;
+import com.bham.restaurantapp.model.fsa.SortOption;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -47,9 +49,10 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
             FsaDataController fsaDataController = new FsaDataController(
                     applicationContext.get()
             );
-            db.authorityDAO().deleteAllAuthorityEntries();
+            db.authorityDAO().deleteAllAuthorityEntities();
             db.businessTypeDAO().deleteAllBusinessTypeEntities();
             db.regionDAO().deleteRegionEntities();
+            db.sortOptionsDAO().deleteAllSortOptionsEntities();
             Log.i(TAG, "Adding businessTypes to DB");
             List<BusinessType> bts = fsaDataController.getBusinessTypes()
                     .getBusinessTypes();
@@ -123,6 +126,18 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
                         )
                 );
                 initialID++;
+            }
+            Log.i(TAG, "doInBackground: Adding sortOptions to DB");
+            List<SortOption> sortOptions = fsaDataController.getSortOptions()
+                    .getSortOptions();
+            for (SortOption s : sortOptions) {
+                db.sortOptionsDAO().insertSortOptionEntity(
+                        new SortOptionEntity(
+                                s.getSortOptionId(),
+                                s.getSortOptionName(),
+                                s.getSortOptionKey()
+                        )
+                );
             }
         } catch (IOException e) {
             e.printStackTrace();

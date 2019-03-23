@@ -19,6 +19,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     private TextView pageNumberTextView;
     private int pageNumber;
     private int pageSize;
+    private String sortOptionKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
             this.pageNumber = 1;
             this.pageSize = 9;
         }
+        sortOptionKey = getIntent().getStringExtra("sortOptionKey");
         setContentView(R.layout.activity_view_all_establishments);
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
         rView = findViewById(R.id.testRecyclerView);
@@ -40,7 +42,11 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                 getApplicationContext(),
                 this.rView,
                 this.pageNumberTextView
-        ).execute(String.valueOf(pageNumber), String.valueOf(pageSize));
+        ).execute(
+                String.valueOf(pageNumber),
+                String.valueOf(pageSize),
+                sortOptionKey
+        );
     }
 
     public void onGoToPreviousPage(View view) {
@@ -51,7 +57,11 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                     this.rView,
                     this.pageNumberTextView
             )
-                    .execute(String.valueOf(this.pageNumber), String.valueOf(this.pageSize));
+                    .execute(
+                            String.valueOf(this.pageNumber),
+                            String.valueOf(this.pageSize),
+                            sortOptionKey
+                    );
         } else
             this.pageNumber += 1;
 
@@ -64,7 +74,11 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                 this.rView,
                 this.pageNumberTextView
         )
-                .execute(String.valueOf(this.pageNumber), String.valueOf(this.pageSize));
+                .execute(
+                        String.valueOf(this.pageNumber),
+                        String.valueOf(this.pageSize),
+                        sortOptionKey
+                );
     }
 
     @Override
@@ -77,7 +91,11 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, String.format("Restored values %d %d", savedInstanceState.getInt("pageNumber"), savedInstanceState.getInt("pageSize")));
+        Log.i(TAG, String.format(
+                "Restored values %d %d",
+                savedInstanceState.getInt("pageNumber"),
+                savedInstanceState.getInt("pageSize"))
+        );
         this.pageNumber = savedInstanceState.getInt("pageNumber");
         this.pageSize = savedInstanceState.getInt("pageSize");
     }

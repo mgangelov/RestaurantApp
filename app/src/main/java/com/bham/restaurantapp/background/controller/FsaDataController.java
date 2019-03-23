@@ -9,6 +9,7 @@ import com.bham.restaurantapp.model.fsa.AuthorityResult;
 import com.bham.restaurantapp.model.fsa.BusinessTypeResult;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
 import com.bham.restaurantapp.model.fsa.RegionResult;
+import com.bham.restaurantapp.model.fsa.SortOptionResult;
 import com.bham.restaurantapp.rest.FsaApiInterface;
 
 import java.io.IOException;
@@ -35,9 +36,17 @@ public class FsaDataController {
     }
 
 
-    public EstablishmentResult getEstablishments(int pageNumber, int pageSize) throws IOException {
+    public EstablishmentResult getEstablishments(
+            int pageNumber,
+            int pageSize,
+            String sortOptionKey
+    ) throws IOException {
         return connectToFsaApi()
-                .getEstablishments(pageNumber, pageSize)
+                .getEstablishments(
+                        pageNumber,
+                        pageSize,
+                        sortOptionKey
+                )
                 .execute()
                 .body();
     }
@@ -48,7 +57,8 @@ public class FsaDataController {
             int region,
             int authority,
             int pageNumber,
-            int pageSize
+            int pageSize,
+            String sortOptionKey
     ) throws IOException {
         float DEFAULT_MAX_DISTANCE = 3;
         Log.i(TAG, "Searching using searchValue \n" +
@@ -62,7 +72,8 @@ public class FsaDataController {
                             searchValue,
                             pageNumber,
                             pageSize,
-                            DEFAULT_MAX_DISTANCE
+                            DEFAULT_MAX_DISTANCE,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -75,7 +86,8 @@ public class FsaDataController {
                             pageSize,
                             DEFAULT_MAX_DISTANCE,
                             businessType,
-                            authority
+                            authority,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -86,7 +98,8 @@ public class FsaDataController {
                             pageNumber,
                             pageSize,
                             DEFAULT_MAX_DISTANCE,
-                            businessType
+                            businessType,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -108,7 +121,8 @@ public class FsaDataController {
             int authority,
             float maxDistanceLimit,
             int pageNumber,
-            int pageSize
+            int pageSize,
+            String sortOptionKey
     ) throws IOException {
         Log.i(TAG, "Searching using longitude & latitude \n" +
                 "using business type " + businessType + "\n " +
@@ -122,7 +136,8 @@ public class FsaDataController {
                             latitude,
                             pageNumber,
                             pageSize,
-                            maxDistanceLimit
+                            maxDistanceLimit,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -136,7 +151,8 @@ public class FsaDataController {
                             pageSize,
                             maxDistanceLimit,
                             businessType,
-                            authority
+                            authority,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -148,7 +164,8 @@ public class FsaDataController {
                             pageNumber,
                             pageSize,
                             maxDistanceLimit,
-                            businessType
+                            businessType,
+                            sortOptionKey
                     )
                     .execute()
                     .body();
@@ -173,6 +190,10 @@ public class FsaDataController {
 
     public AuthorityResult getAuthorities() throws IOException {
         return connectToFsaApi().getAuthorities().execute().body();
+    }
+
+    public SortOptionResult getSortOptions() throws IOException {
+        return connectToFsaApi().getSortOptions().execute().body();
     }
 
     private FsaApiInterface connectToFsaApi() {

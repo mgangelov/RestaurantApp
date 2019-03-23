@@ -18,7 +18,6 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
-    private int totalPages;
 
     public EstablishmentsAsyncTask(
             Context applicationContext,
@@ -36,21 +35,23 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                 applicationContext.get()
         );
         try {
-            if (strings.length == 2)
+            if (strings.length == 3) // ViewAllEstablishments
                 return fsaAPI.getEstablishments(
                         Integer.valueOf(strings[0]), // pageNumber
-                        Integer.valueOf(strings[1]) // pageSize
+                        Integer.valueOf(strings[1]), // pageSize
+                        strings[2] // sortOptionKey
                 );
-            else if (strings.length == 6)
+            else if (strings.length == 7)
                 return fsaAPI.getEstablishments(
                         strings[0], // searchValue
                         Integer.valueOf(strings[1]), // businessType
                         Integer.valueOf(strings[2]), // region
                         Integer.valueOf(strings[3]), // authority
                         Integer.valueOf(strings[4]), // pageNumber
-                        Integer.valueOf(strings[5]) // pageSize
+                        Integer.valueOf(strings[5]), // pageSize
+                        strings[6] // sortOptionKey
                 );
-            else if (strings.length == 8)
+            else if (strings.length == 9)
                 return fsaAPI.getEstablishments(
                         strings[0], // Longitude
                         strings[1], // Latitude
@@ -59,7 +60,8 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[4]), // authority
                         Float.valueOf(strings[5]), // maxDistanceLimit
                         Integer.valueOf(strings[6]), // pageNumber
-                        Integer.valueOf(strings[7]) // pageSize
+                        Integer.valueOf(strings[7]), // pageSize
+                        strings[8] // sortOptionKey
                 );
         } catch (IOException e) {
             e.printStackTrace();

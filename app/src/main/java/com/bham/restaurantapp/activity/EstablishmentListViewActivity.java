@@ -25,6 +25,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     private float maxDistanceLimit;
     private String longitude;
     private String latitude;
+    private String sortOptionKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
         businessType = receiveSearchValueIntent.getIntExtra("businessType", -1);
         region = receiveSearchValueIntent.getIntExtra("region", 99);
         authority = receiveSearchValueIntent.getIntExtra("authority", 8999);
+        sortOptionKey = receiveSearchValueIntent.getStringExtra("sortOptionKey");
         if (maxDistanceLimit == 3)
             new EstablishmentsAsyncTask(
                     getApplicationContext(),
@@ -57,7 +59,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(region),
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
-                            String.valueOf(pageSize)
+                            String.valueOf(pageSize),
+                            sortOptionKey
                     );
         else {
             // Convert postcode into coordinates so that the maxDistanceLimit
@@ -79,7 +82,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                                         String.valueOf(authority),
                                         String.valueOf(maxDistanceLimit),
                                         String.valueOf(pageNumber),
-                                        String.valueOf(pageSize)
+                                        String.valueOf(pageSize),
+                                        sortOptionKey
                                 );
                     }
             ).execute(searchValue);
@@ -116,7 +120,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(region),
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
-                            String.valueOf(pageSize)
+                            String.valueOf(pageSize),
+                            sortOptionKey
                     );
         } else {
             new EstablishmentsAsyncTask(
@@ -132,7 +137,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(authority),
                             String.valueOf(maxDistanceLimit),
                             String.valueOf(pageNumber),
-                            String.valueOf(pageSize)
+                            String.valueOf(pageSize),
+                            sortOptionKey
                     );
         }
     }
