@@ -21,6 +21,11 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_MAX_DISTANCE_LIMIT;
+import static com.bham.restaurantapp.Globals.DEFAULT_REGION_ID;
+
 public class FsaDataController {
     private static final String TAG = "FsaDataController";
     private Retrofit retrofit;
@@ -58,57 +63,79 @@ public class FsaDataController {
             int authority,
             int pageNumber,
             int pageSize,
-            String sortOptionKey
+            String sortOptionKey,
+            int ratingKey
     ) throws IOException {
-        float DEFAULT_MAX_DISTANCE = 3;
         Log.i(TAG, "Searching using searchValue \n" +
                 "using business type " + businessType + "\n " +
                 "and region " + region + "\n" +
                 "and authority " + authority + "\n" +
-                "and maxDistanceLimit " + DEFAULT_MAX_DISTANCE);
-        if (businessType == -1) {
-            return connectToFsaApi()
-                    .getEstablishments(
-                            searchValue,
-                            pageNumber,
-                            pageSize,
-                            DEFAULT_MAX_DISTANCE,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        }
-        if (authority < 8999) { // Unique authority selected
-            return connectToFsaApi()
-                    .getEstablishments(
-                            searchValue,
-                            pageNumber,
-                            pageSize,
-                            DEFAULT_MAX_DISTANCE,
-                            businessType,
-                            authority,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        } else if (region == 99) {
-            return connectToFsaApi()
-                    .getEstablishments(
-                            searchValue,
-                            pageNumber,
-                            pageSize,
-                            DEFAULT_MAX_DISTANCE,
-                            businessType,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        } else { // All authorities from region selected
-            // TODO
-            List<AuthorityEntity> authorities = db
-                    .authorityDAO()
-                    .findAuthorityByRegionId(region);
-            return null;
+                "and maxDistanceLimit " + DEFAULT_MAX_DISTANCE_LIMIT);
+
+        if (businessType == DEFAULT_BUSINESS_TYPE_ID) { // All business types
+            if (region == 99) { // All regions, everywhere essentially
+                return connectToFsaApi()
+                        .getEstablishments(
+                                searchValue,
+                                pageNumber,
+                                pageSize,
+                                DEFAULT_MAX_DISTANCE_LIMIT,
+                                sortOptionKey,
+                                ratingKey
+                        ).execute().body();
+            } else {
+                if (authority < 8999) { // Specific authority selected
+                    return connectToFsaApi()
+                            .getEstablishments(
+                                    searchValue,
+                                    pageNumber,
+                                    pageSize,
+                                    DEFAULT_MAX_DISTANCE_LIMIT,
+                                    authority,
+                                    sortOptionKey,
+                                    ratingKey
+                            ).execute().body();
+                } else { // All authorities from region required
+                    // TODO
+                    List<AuthorityEntity> authorities = db
+                            .authorityDAO()
+                            .findAuthorityByRegionId(region);
+                    return null;
+                }
+            }
+        } else { // Specific business type selected
+            if (region == 99) { // All regions, everywhere
+                return connectToFsaApi()
+                        .getEstablishments(
+                                searchValue,
+                                pageNumber,
+                                pageSize,
+                                DEFAULT_MAX_DISTANCE_LIMIT,
+                                businessType,
+                                sortOptionKey,
+                                ratingKey
+                        ).execute().body();
+            } else {
+                if (authority < 8999) { // Specific authority selected
+                    return connectToFsaApi()
+                            .getEstablishments(
+                                    searchValue,
+                                    pageNumber,
+                                    pageSize,
+                                    DEFAULT_MAX_DISTANCE_LIMIT,
+                                    businessType,
+                                    authority,
+                                    sortOptionKey,
+                                    ratingKey
+                            ).execute().body();
+                } else { // All authorities from region required
+                    // TODO
+                    List<AuthorityEntity> authorities = db
+                            .authorityDAO()
+                            .findAuthorityByRegionId(region);
+                    return null;
+                }
+            }
         }
     }
 
@@ -122,59 +149,82 @@ public class FsaDataController {
             float maxDistanceLimit,
             int pageNumber,
             int pageSize,
-            String sortOptionKey
+            String sortOptionKey,
+            int ratingKey
     ) throws IOException {
         Log.i(TAG, "Searching using longitude & latitude \n" +
                 "using business type " + businessType + "\n " +
                 "and region " + region + "\n" +
                 "and authority " + authority + "\n" +
                 "and maxDistanceLimit " + maxDistanceLimit);
-        if (businessType == -1) {
-            return connectToFsaApi()
-                    .getEstablishments(
-                            longitude,
-                            latitude,
-                            pageNumber,
-                            pageSize,
-                            maxDistanceLimit,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        }
-        else if (authority < 8999) {
-            return connectToFsaApi()
-                    .getEstablishments(
-                            longitude,
-                            latitude,
-                            pageNumber,
-                            pageSize,
-                            maxDistanceLimit,
-                            businessType,
-                            authority,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        } else if (region == 99) {
-            return connectToFsaApi()
-                    .getEstablishments(
-                            longitude,
-                            latitude,
-                            pageNumber,
-                            pageSize,
-                            maxDistanceLimit,
-                            businessType,
-                            sortOptionKey
-                    )
-                    .execute()
-                    .body();
-        } else { // All authorities from region selected
-            // TODO
-            List<AuthorityEntity> authorities = db
-                    .authorityDAO()
-                    .findAuthorityByRegionId(region);
-            return null;
+        if (businessType == DEFAULT_BUSINESS_TYPE_ID) {
+            if (region == DEFAULT_REGION_ID) {
+                return connectToFsaApi()
+                        .getEstablishments(
+                                longitude,
+                                latitude,
+                                pageNumber,
+                                pageSize,
+                                maxDistanceLimit,
+                                sortOptionKey,
+                                ratingKey
+                        ).execute().body();
+            } else {
+                if (authority < DEFAULT_AUTHORITY_ID) {
+                   return connectToFsaApi()
+                           .getEstablishments(
+                                   longitude,
+                                   latitude,
+                                   pageNumber,
+                                   pageSize,
+                                   maxDistanceLimit,
+                                   authority,
+                                   sortOptionKey,
+                                   ratingKey
+                           ).execute().body();
+                } else {
+                    // TODO
+                    List<AuthorityEntity> authorities = db
+                            .authorityDAO()
+                            .findAuthorityByRegionId(region);
+                    return null;
+                }
+            }
+        } else {
+            if (region == DEFAULT_REGION_ID) {
+                return connectToFsaApi()
+                        .getEstablishments(
+                                longitude,
+                                latitude,
+                                pageNumber,
+                                pageSize,
+                                maxDistanceLimit,
+                                businessType,
+                                sortOptionKey,
+                                ratingKey
+                        ).execute().body();
+            } else {
+                if (authority < DEFAULT_AUTHORITY_ID) {
+                    return connectToFsaApi()
+                            .getEstablishments(
+                                    longitude,
+                                    latitude,
+                                    pageNumber,
+                                    pageSize,
+                                    maxDistanceLimit,
+                                    businessType,
+                                    authority,
+                                    sortOptionKey,
+                                    ratingKey
+                            ).execute().body();
+                } else {
+                    // TODO
+                    List<AuthorityEntity> authorities = db
+                            .authorityDAO()
+                            .findAuthorityByRegionId(region);
+                    return null;
+                }
+            }
         }
     }
 

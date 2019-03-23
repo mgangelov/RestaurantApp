@@ -11,7 +11,9 @@
       <w>maxdistancelimit</w>
       <w>pagenumber</w>
       <w>pagesize</w>
+      <w>ratingkey</w>
       <w>schemetypeid</w>
+      <w>sortoptionkey</w>
       <w>sortoptions</w>
     </words>
   </dictionary>

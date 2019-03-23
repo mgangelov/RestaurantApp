@@ -41,7 +41,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[1]), // pageSize
                         strings[2] // sortOptionKey
                 );
-            else if (strings.length == 7)
+            else if (strings.length == 8)
                 return fsaAPI.getEstablishments(
                         strings[0], // searchValue
                         Integer.valueOf(strings[1]), // businessType
@@ -49,9 +49,10 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[3]), // authority
                         Integer.valueOf(strings[4]), // pageNumber
                         Integer.valueOf(strings[5]), // pageSize
-                        strings[6] // sortOptionKey
+                        strings[6], // sortOptionKey
+                        Integer.valueOf(strings[7]) // ratingKey
                 );
-            else if (strings.length == 9)
+            else if (strings.length == 10)
                 return fsaAPI.getEstablishments(
                         strings[0], // Longitude
                         strings[1], // Latitude
@@ -61,7 +62,8 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Float.valueOf(strings[5]), // maxDistanceLimit
                         Integer.valueOf(strings[6]), // pageNumber
                         Integer.valueOf(strings[7]), // pageSize
-                        strings[8] // sortOptionKey
+                        strings[8], // sortOptionKey
+                        Integer.valueOf(strings[9]) // ratingKey
                 );
         } catch (IOException e) {
             e.printStackTrace();

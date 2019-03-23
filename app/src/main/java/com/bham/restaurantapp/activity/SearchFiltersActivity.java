@@ -14,14 +14,23 @@ import com.bham.restaurantapp.background.async.PopulateFiltersAsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_POSITION;
+import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_POSITION;
+import static com.bham.restaurantapp.Globals.DEFAULT_MAX_DISTANCE_LIMIT;
+import static com.bham.restaurantapp.Globals.DEFAULT_MIN_RATING;
+import static com.bham.restaurantapp.Globals.DEFAULT_REGION_POSITION;
+
 public class SearchFiltersActivity extends AppCompatActivity {
     private static final String TAG = "SearchFiltersActivity";
     private Spinner businessTypesSpinner;
     private Spinner regionSpinner;
     private Spinner authoritiesSpinner;
     private float maxDistanceLimit;
-    TextView seekBarCurrentProgressTextView;
+    private int minRating;
+    TextView maxDistanceLimitProgressTextView;
+    TextView minRatingProgressTextView;
     private SeekBar maxDistanceSeekBar;
+    private SeekBar minRatingSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,48 +39,77 @@ public class SearchFiltersActivity extends AppCompatActivity {
         businessTypesSpinner = findViewById(R.id.businessTypesSpinner);
         regionSpinner = findViewById(R.id.regionsSpinner);
         authoritiesSpinner = findViewById(R.id.authoritiesSpinner);
+        Log.i(TAG, "onCreate: Initialising the seek bars");
         maxDistanceSeekBar = findViewById(R.id.maxDistanceLimitSeekBar);
         maxDistanceLimit = getIntent()
-                .getFloatExtra("maxDistanceLimit", 3);
+                .getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
         maxDistanceSeekBar.setProgress((int) (maxDistanceLimit * 10));
-        maxDistanceSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        seekBarCurrentProgressTextView =
-                findViewById(R.id.seekBarCurrentProgressTextView);
-        seekBarCurrentProgressTextView.setText(String.valueOf(
+        maxDistanceSeekBar.setOnSeekBarChangeListener(maxDistanceLimitChangeListener);
+        maxDistanceLimitProgressTextView =
+                findViewById(R.id.maxDistanceLimitProgressTextView);
+        maxDistanceLimitProgressTextView.setText(String.valueOf(
                 convertIntToFloat(maxDistanceSeekBar.getProgress())
-                ));
+        ));
+        minRating = getIntent()
+                .getIntExtra("minRating", DEFAULT_MIN_RATING);
+        minRatingSeekBar = findViewById(R.id.minRatingSeekBar);
+        minRatingSeekBar.setProgress(minRating);
+        minRatingSeekBar.setOnSeekBarChangeListener(minRatingChangeListener);
+        minRatingProgressTextView =
+                findViewById(R.id.minRatingProgressTextView);
+        minRatingProgressTextView.setText(
+                String.valueOf(minRatingSeekBar.getProgress())
+        );
         Log.i(TAG, "Populating business types Spinner");
         new PopulateFiltersAsyncTask(
                 getApplicationContext(),
                 businessTypesSpinner,
                 regionSpinner,
                 authoritiesSpinner,
-                getIntent().getIntExtra("businessTypePosition", 0),
-                getIntent().getIntExtra("regionPosition", 0),
-                getIntent().getIntExtra("authorityPosition", 0)
+                getIntent().getIntExtra("businessTypePosition", DEFAULT_BUSINESS_TYPE_POSITION),
+                getIntent().getIntExtra("regionPosition", DEFAULT_REGION_POSITION),
+                getIntent().getIntExtra("authorityPosition", DEFAULT_AUTHORITY_POSITION)
         ).execute();
     }
 
-    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+    SeekBar.OnSeekBarChangeListener maxDistanceLimitChangeListener =
+            new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    maxDistanceLimitProgressTextView.setText(
+                            String.valueOf(convertIntToFloat(progress))
+                    );
+                }
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            seekBarCurrentProgressTextView.setText(
-                    String.valueOf(convertIntToFloat(progress))
-            );
-        }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
-        }
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    maxDistanceLimit = convertIntToFloat(seekBar.getProgress());
 
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            maxDistanceLimit = convertIntToFloat(seekBar.getProgress());
+                }
+            };
 
-        }
-    };
+    SeekBar.OnSeekBarChangeListener minRatingChangeListener =
+            new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    minRatingProgressTextView.setText(String.valueOf(progress));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    minRating = seekBar.getProgress();
+                }
+            };
 
     public float convertIntToFloat(int progress) {
         return .1f * progress;
@@ -79,18 +117,22 @@ public class SearchFiltersActivity extends AppCompatActivity {
 
     public void clearFilterChanges(View view) {
         Log.i(TAG, "Clearing all filter changes");
-        maxDistanceSeekBar.setProgress(30);
-        seekBarCurrentProgressTextView.setText(String.valueOf(
+        maxDistanceSeekBar.setProgress((int) (DEFAULT_MAX_DISTANCE_LIMIT * 10));
+        maxDistanceLimitProgressTextView.setText(String.valueOf(
                 convertIntToFloat(maxDistanceSeekBar.getProgress())
-                ));
+        ));
+        minRatingSeekBar.setProgress(DEFAULT_MIN_RATING);
+        minRatingProgressTextView.setText(
+                String.valueOf(minRatingSeekBar.getProgress())
+        );
         new PopulateFiltersAsyncTask(
                 getApplicationContext(),
                 businessTypesSpinner,
                 regionSpinner,
                 authoritiesSpinner,
-                0,
-                0,
-                0
+                DEFAULT_BUSINESS_TYPE_POSITION,
+                DEFAULT_REGION_POSITION,
+                DEFAULT_AUTHORITY_POSITION
         ).execute();
     }
 
@@ -160,6 +202,11 @@ public class SearchFiltersActivity extends AppCompatActivity {
         searchScreenIntent.putExtra(
                 "searchValue",
                 getIntent().getStringExtra("searchValue")
+        );
+        Log.i(TAG, "submitFilters: minRating is " + minRating);
+        searchScreenIntent.putExtra(
+                "minRating",
+                minRating
         );
         startActivity(searchScreenIntent);
     }

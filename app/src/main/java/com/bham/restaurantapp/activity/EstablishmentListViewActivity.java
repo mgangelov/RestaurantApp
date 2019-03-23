@@ -1,6 +1,5 @@
 package com.bham.restaurantapp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +11,12 @@ import com.bham.restaurantapp.background.async.PostcodeAsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_MAX_DISTANCE_LIMIT;
+import static com.bham.restaurantapp.Globals.DEFAULT_MIN_RATING;
+import static com.bham.restaurantapp.Globals.DEFAULT_REGION_ID;
 
 public class EstablishmentListViewActivity extends AppCompatActivity {
     private RecyclerView rView;
@@ -26,6 +31,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     private String longitude;
     private String latitude;
     private String sortOptionKey;
+    private int ratingKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +46,13 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
         this.pageNumber = 1;
         this.pageSize = 9;
 
-        Intent receiveSearchValueIntent = getIntent();
-        searchValue = receiveSearchValueIntent.getStringExtra("searchValue");
-        maxDistanceLimit = receiveSearchValueIntent.getFloatExtra("maxDistanceLimit", 3);
-        businessType = receiveSearchValueIntent.getIntExtra("businessType", -1);
-        region = receiveSearchValueIntent.getIntExtra("region", 99);
-        authority = receiveSearchValueIntent.getIntExtra("authority", 8999);
-        sortOptionKey = receiveSearchValueIntent.getStringExtra("sortOptionKey");
+        searchValue = getIntent().getStringExtra("searchValue");
+        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        businessType = getIntent().getIntExtra("businessType", DEFAULT_BUSINESS_TYPE_ID);
+        region = getIntent().getIntExtra("region", DEFAULT_REGION_ID);
+        authority = getIntent().getIntExtra("authority", DEFAULT_AUTHORITY_ID);
+        sortOptionKey = getIntent().getStringExtra("sortOptionKey");
+        ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
         if (maxDistanceLimit == 3)
             new EstablishmentsAsyncTask(
                     getApplicationContext(),
@@ -60,7 +66,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey
+                            sortOptionKey,
+                            String.valueOf(ratingKey)
                     );
         else {
             // Convert postcode into coordinates so that the maxDistanceLimit
@@ -83,7 +90,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                                         String.valueOf(maxDistanceLimit),
                                         String.valueOf(pageNumber),
                                         String.valueOf(pageSize),
-                                        sortOptionKey
+                                        sortOptionKey,
+                                        String.valueOf(ratingKey)
                                 );
                     }
             ).execute(searchValue);
@@ -121,7 +129,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey
+                            sortOptionKey,
+                            String.valueOf(ratingKey)
                     );
         } else {
             new EstablishmentsAsyncTask(
@@ -138,7 +147,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(maxDistanceLimit),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey
+                            sortOptionKey,
+                            String.valueOf(ratingKey)
                     );
         }
     }

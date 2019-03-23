@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.bham.restaurantapp.Globals.DEFAULT_MIN_RATING;
+
 public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     private static final String TAG = "ViewAllEstablishmentsActivity";
     private RecyclerView rView;
@@ -20,6 +22,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     private int pageNumber;
     private int pageSize;
     private String sortOptionKey;
+    private int ratingKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
             this.pageNumber = 1;
             this.pageSize = 9;
         }
+        ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
         sortOptionKey = getIntent().getStringExtra("sortOptionKey");
         setContentView(R.layout.activity_view_all_establishments);
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
@@ -60,7 +64,8 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                     .execute(
                             String.valueOf(this.pageNumber),
                             String.valueOf(this.pageSize),
-                            sortOptionKey
+                            sortOptionKey,
+                            String.valueOf(ratingKey)
                     );
         } else
             this.pageNumber += 1;
@@ -77,7 +82,8 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                 .execute(
                         String.valueOf(this.pageNumber),
                         String.valueOf(this.pageSize),
-                        sortOptionKey
+                        sortOptionKey,
+                        String.valueOf(ratingKey)
                 );
     }
 

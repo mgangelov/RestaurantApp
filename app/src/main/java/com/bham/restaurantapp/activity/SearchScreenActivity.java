@@ -1,6 +1,5 @@
 package com.bham.restaurantapp.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,6 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_POSITION;
+import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_POSITION;
+import static com.bham.restaurantapp.Globals.DEFAULT_MAX_DISTANCE_LIMIT;
+import static com.bham.restaurantapp.Globals.DEFAULT_MIN_RATING;
+import static com.bham.restaurantapp.Globals.DEFAULT_REGION_ID;
+import static com.bham.restaurantapp.Globals.DEFAULT_REGION_POSITION;
+
 public class SearchScreenActivity extends AppCompatActivity {
     private static final String TAG = "SearchScreenActivity";
     private EditText establishmentSearchEditText;
@@ -26,6 +34,7 @@ public class SearchScreenActivity extends AppCompatActivity {
     private int region;
     private int authority;
     private float maxDistanceLimit;
+    private int minRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         new SearchScreenAsyncTask(
                 getApplicationContext(),
                 sortBySpinner,
-                getIntent().getFloatExtra("maxDistanceLimit", 3)
+                getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT)
         )
                 .execute();
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
@@ -47,11 +56,18 @@ public class SearchScreenActivity extends AppCompatActivity {
             );
 
         Log.i(TAG, "Recreating activity");
-        businessType = getIntent().getIntExtra("businessType", -1);
-        region = getIntent().getIntExtra("region", 99);
-        authority = getIntent().getIntExtra("authority", 8999);
-        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", 3);
-        if (businessType != -1 || region != 99 || authority != 8999 || maxDistanceLimit != 3) {
+        businessType = getIntent().getIntExtra("businessType", DEFAULT_BUSINESS_TYPE_ID);
+        region = getIntent().getIntExtra("region", DEFAULT_REGION_ID);
+        authority = getIntent().getIntExtra("authority", DEFAULT_AUTHORITY_ID);
+        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        minRating = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
+        if (
+                businessType != DEFAULT_BUSINESS_TYPE_ID ||
+                        region != DEFAULT_REGION_ID ||
+                        authority != DEFAULT_AUTHORITY_ID ||
+                        maxDistanceLimit != DEFAULT_MAX_DISTANCE_LIMIT ||
+                        minRating != DEFAULT_MIN_RATING
+        ) {
             Log.i(TAG, "Entered if statement");
             MaterialButton addFiltersButton = findViewById(R.id.addSearchFiltersButton);
             addFiltersButton.setText(
@@ -68,6 +84,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         sendSearchValueIntent.putExtra("region", region);
         sendSearchValueIntent.putExtra("authority", authority);
         sendSearchValueIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
+        sendSearchValueIntent.putExtra("minRating", minRating);
 
         Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
         sendSearchValueIntent.putExtra(
@@ -102,13 +119,9 @@ public class SearchScreenActivity extends AppCompatActivity {
         confirmationAlertDialog.setTitle("Refresh DB");
         confirmationAlertDialog.setMessage("Are you sure you want to refresh database?" +
                 "This will delete all database data.");
-        confirmationAlertDialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
                 new RefreshDbAsyncTask(getApplicationContext(), successAlert)
-                        .execute();
-            }
-        });
+                .execute());
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
         confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);
         confirmationAlertDialog.show();
@@ -123,15 +136,15 @@ public class SearchScreenActivity extends AppCompatActivity {
         openSearchFiltersIntent.putExtra("searchValue", establishmentSearchEditText.getText().toString());
         openSearchFiltersIntent.putExtra(
                 "businessTypePosition",
-                getIntent().getIntExtra("businessTypePosition", 0)
+                getIntent().getIntExtra("businessTypePosition", DEFAULT_BUSINESS_TYPE_POSITION)
         );
         openSearchFiltersIntent.putExtra(
                 "regionPosition",
-                getIntent().getIntExtra("regionPosition", 0)
+                getIntent().getIntExtra("regionPosition", DEFAULT_REGION_POSITION)
         );
         openSearchFiltersIntent.putExtra(
                 "authorityPosition",
-                getIntent().getIntExtra("authorityPosition", 0)
+                getIntent().getIntExtra("authorityPosition", DEFAULT_AUTHORITY_POSITION)
         );
         openSearchFiltersIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
         startActivity(openSearchFiltersIntent);

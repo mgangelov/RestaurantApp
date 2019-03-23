@@ -14,23 +14,14 @@ public interface FsaApiInterface {
     @GET("regions")
     Call<RegionResult> getRegions();
 
-    @GET("establishments?countryId=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("sortoptionkey") String sortOptionKey
     );
 
-    @GET("establishments?schemetypeid=1")
-    Call<EstablishmentResult> getEstablishments(
-            @Query("address") String address,
-            @Query("pagenumber") int pageNumber,
-            @Query("pagesize") int pageSize,
-            @Query("sortoptionkey") String sortOptionKey
-    );
-
-
-    @GET("establishments/?schemetypeid=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
@@ -39,10 +30,11 @@ public interface FsaApiInterface {
             @Query("maxdistancelimit") float maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("localauthorityid") int localAuthorityId,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments/?schemetypeid=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
@@ -50,20 +42,22 @@ public interface FsaApiInterface {
             @Query("pagesize") int pageSize,
             @Query("maxdistancelimit") float maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments/?schemetypeid=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("maxdistancelimit") float maxDistanceLimit,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments/?schemetypeid=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
@@ -71,26 +65,30 @@ public interface FsaApiInterface {
             @Query("maxdistancelimit") float maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("localauthorityid") int localAuthorityId,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments/?schemetypeid=1")
+
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("maxdistancelimit") float maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments/?schemetypeid=1")
+    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("maxdistancelimit") float maxDistanceLimit,
-            @Query("sortoptionkey") String sortOptionKey
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
     );
 
     @GET("businesstypes/basic")
