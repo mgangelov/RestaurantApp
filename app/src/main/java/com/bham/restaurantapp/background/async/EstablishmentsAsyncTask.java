@@ -18,6 +18,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
+    private int totalPages;
 
     public EstablishmentsAsyncTask(
             Context applicationContext,

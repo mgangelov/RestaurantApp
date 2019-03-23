@@ -18,8 +18,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     private TextView pageNumberTextView;
     private int pageNumber;
     private int pageSize;
-    private int totalPages;
-//    private SharedPreferences preferences;
     private int businessType;
     private int region;
     private int authority;
@@ -30,7 +28,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: Add totalPages counter so that I can stop next page
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_establishments);
 
@@ -52,7 +49,8 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
             new EstablishmentsAsyncTask(
                     getApplicationContext(),
                     rView,
-                    pageNumberTextView)
+                    pageNumberTextView
+            )
                     .execute(
                             searchValue,
                             String.valueOf(businessType),
@@ -66,16 +64,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
             // option works with the API
             new PostcodeAsyncTask(
                     convertedPostcode -> {
-                        // Store the converted coordinate to shared preferences
-//                        SharedPreferences.Editor preferencesEditor =
-//                                this.preferences.edit();
-//                        preferencesEditor.putString(
-//                                "longitude", convertedPostcode.longitude
-//                        );
-//                        preferencesEditor.putString(
-//                                "latitude", convertedPostcode.latitude
-//                        );
-//                        preferencesEditor.apply();
                         longitude = convertedPostcode.longitude;
                         latitude = convertedPostcode.latitude;
                         new EstablishmentsAsyncTask(
@@ -107,8 +95,13 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     }
 
     public void onGoToNextPage(View view) {
-        this.pageNumber += 1;
-        getPageResults();
+        int totalPages = Integer.valueOf(
+                pageNumberTextView.getText().toString().split("/")[1]
+        );
+        if (this.pageNumber + 1 <= totalPages) {
+            this.pageNumber += 1;
+            getPageResults();
+        }
     }
 
     private void getPageResults() {
