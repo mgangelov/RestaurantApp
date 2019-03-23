@@ -13,16 +13,72 @@ public interface FsaApiInterface {
     @GET("regions")
     Call<RegionResult> getRegions();
 
-    @GET("establishments")
+    @GET("establishments?countryId=1")
     Call<EstablishmentResult> getEstablishments(
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize
+    );
+
+    @GET("establishments?countryId=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize
+    );
+
+
+    @GET("establishments/?countryid=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("longitude") String longitude,
+            @Query("latitude") String latitude,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("businesstypeid") int businessTypeId,
+            @Query("localauthorityid") int localAuthorityId
     );
 
     @GET("establishments/?countryid=1")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("businesstypeid") int businessTypeId
+    );
+
+    @GET("establishments/?countryid=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("longitude") String longitude,
+            @Query("latitude") String latitude,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit
+    );
+
+    @GET("establishments/?countryid=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("businesstypeid") int businessTypeId,
+            @Query("localauthorityid") int localAuthorityId
+    );
+
+    @GET("establishments/?countryid=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("businesstypeid") int businessTypeId
+    );
+
+    @GET("establishments/?countryid=1")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("maxdistancelimit") float maxDistanceLimit

@@ -1,10 +1,12 @@
 <component name="ProjectDictionaryState">
   <dictionary name="martin">
     <words>
+      <w>businesstypeid</w>
       <w>businesstypes</w>
       <w>countryid</w>
       <w>fhrs</w>
       <w>fhrsid</w>
+      <w>localauthorityid</w>
       <w>maxdistance</w>
       <w>maxdistancelimit</w>
       <w>pagenumber</w>

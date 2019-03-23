@@ -12,39 +12,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/all_establishments_text_view_text"
-        app:layout_constraintBottom_toTopOf="@id/testRecyclerView"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:background="@android:color/holo_blue_bright"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/testRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/allEstablishmentsTextView" />
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/allEstablishmentsTextView"
+        app:layout_constraintBottom_toTopOf="@id/allEstablishmentsButtonsConstraintLayout"
+        />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/allEstablishmentsPrevPageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/all_establishments_prev_page_button_text"
-        android:onClick="onGoToPreviousPage"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/allEstablishmentsButtonsConstraintLayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/pageNumberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toRightOf="@id/allEstablishmentsPrevPageButton"
-        app:layout_constraintRight_toLeftOf="@id/allEstablishmentsNextPageButton"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allEstablishmentsPrevPageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_establishments_prev_page_button_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onGoToPreviousPage"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/allEstablishmentsNextPageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/all_establishments_next_page_button_text"
-        android:onClick="onGoToNextPage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <TextView
+            android:id="@+id/pageNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintLeft_toRightOf="@id/allEstablishmentsPrevPageButton"
+            app:layout_constraintRight_toLeftOf="@id/allEstablishmentsNextPageButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allEstablishmentsNextPageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_establishments_next_page_button_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="onGoToNextPage"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

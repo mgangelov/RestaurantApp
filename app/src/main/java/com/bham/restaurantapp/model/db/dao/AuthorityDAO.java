@@ -30,7 +30,12 @@ public interface AuthorityDAO {
     @Query("select * from authorityentity " +
             "where authority_region_id like :regionId " +
             "order by authority_name asc")
-    Cursor findAuthorityByRegionId(int regionId);
+    Cursor findAuthorityByRegionIdCursor(int regionId);
+
+    @Query("select * from authorityentity " +
+            "where authority_region_id like :regionId " +
+            "order by authority_name asc")
+    List<AuthorityEntity> findAuthorityByRegionId(int regionId);
 
     @Insert
     void insertAuthorityEntity(AuthorityEntity ae);

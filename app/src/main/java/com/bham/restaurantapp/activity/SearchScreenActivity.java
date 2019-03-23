@@ -21,17 +21,26 @@ public class SearchScreenActivity extends AppCompatActivity {
     private int businessType;
     private int region;
     private int authority;
+    private float maxDistanceLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
+        if (savedInstanceState != null)
+            establishmentSearchEditText.setText(savedInstanceState.getString("searchValue"));
+        else if (getIntent().getStringExtra("searchValue") != null)
+            establishmentSearchEditText.setText(
+                    String.valueOf(getIntent().getStringExtra("searchValue"))
+            );
+
         Log.i(TAG, "Recreating activity");
         businessType = getIntent().getIntExtra("businessType", -1);
         region = getIntent().getIntExtra("region", 99);
         authority = getIntent().getIntExtra("authority", 8999);
-        if (businessType != -1 || region != 99 || authority != 8999) {
+        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", 3);
+        if (businessType != -1 || region != 99 || authority != 8999 || maxDistanceLimit != 3) {
             Log.i(TAG, "Entered if statement");
             MaterialButton addFiltersButton = findViewById(R.id.addSearchFiltersButton);
             addFiltersButton.setText(
@@ -41,10 +50,13 @@ public class SearchScreenActivity extends AppCompatActivity {
     }
 
 
-
     public void sendEstablishmentSearchEnquiry(View view) {
         Intent sendSearchValueIntent = new Intent(this, EstablishmentListViewActivity.class);
         sendSearchValueIntent.putExtra("searchValue", establishmentSearchEditText.getText().toString());
+        sendSearchValueIntent.putExtra("businessType", businessType);
+        sendSearchValueIntent.putExtra("region", region);
+        sendSearchValueIntent.putExtra("authority", authority);
+        sendSearchValueIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
         startActivity(sendSearchValueIntent);
     }
 
@@ -81,6 +93,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         openSearchFiltersIntent.putExtra("businessType", businessType);
         openSearchFiltersIntent.putExtra("region", region);
         openSearchFiltersIntent.putExtra("authority", authority);
+        openSearchFiltersIntent.putExtra("searchValue", establishmentSearchEditText.getText().toString());
         openSearchFiltersIntent.putExtra(
                 "businessTypePosition",
                 getIntent().getIntExtra("businessTypePosition", 0)
@@ -93,19 +106,22 @@ public class SearchScreenActivity extends AppCompatActivity {
                 "authorityPosition",
                 getIntent().getIntExtra("authorityPosition", 0)
         );
+        openSearchFiltersIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
         startActivity(openSearchFiltersIntent);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("searchTerm", establishmentSearchEditText.getText().toString());
+        Log.i(TAG, "Storing state");
+        outState.putString("searchValue", establishmentSearchEditText.getText().toString());
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        establishmentSearchEditText.setText(savedInstanceState.getString("searchTerm"));
-
-    }
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        Log.i(TAG, "Restoring state");
+//        establishmentSearchEditText.setText(savedInstanceState.getString("searchTerm"));
+//
+//    }
 }

@@ -44,7 +44,9 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
                     FsaDatabase.class,
                     "database")
                     .build();
-            FsaDataController fsaDataController = new FsaDataController();
+            FsaDataController fsaDataController = new FsaDataController(
+                    applicationContext.get()
+            );
             db.authorityDAO().deleteAllAuthorityEntries();
             db.businessTypeDAO().deleteAllBusinessTypeEntities();
             db.regionDAO().deleteRegionEntities();

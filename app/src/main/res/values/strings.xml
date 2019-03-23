@@ -3,7 +3,7 @@
     <string name="fsa_logo_image_view_description">FSA Logo</string>
     <string name="search_button_text">Search</string>
     <string name="view_all_button_text">View All Establishments</string>
-    <string name="all_establishments_text_view_text">All establishments:</string>
+    <string name="all_establishments_text_view_text">All establishments</string>
     <string name="all_establishments_prev_page_button_text">Prev Page</string>
     <string name="all_establishments_next_page_button_text">Next Page</string>
     <string name="search_field_text_hint">Enter postcode: </string>
@@ -19,4 +19,5 @@
     <string name="authorities_text_view">Authorities</string>
     <string name="search_filters_button_modify_filters">Modify filters</string>
     <string name="filters_selected_text">%d filters selected.</string>
+    <string name="max_distance_limit_text_view">Maximum distance</string>
 </resources>

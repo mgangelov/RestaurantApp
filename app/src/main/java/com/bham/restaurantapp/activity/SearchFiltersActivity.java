@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.PopulateFiltersAsyncTask;
@@ -17,6 +19,9 @@ public class SearchFiltersActivity extends AppCompatActivity {
     private Spinner businessTypesSpinner;
     private Spinner regionSpinner;
     private Spinner authoritiesSpinner;
+    private float maxDistanceLimit;
+    TextView seekBarCurrentProgressTextView;
+    private SeekBar maxDistanceSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,16 @@ public class SearchFiltersActivity extends AppCompatActivity {
         businessTypesSpinner = findViewById(R.id.businessTypesSpinner);
         regionSpinner = findViewById(R.id.regionsSpinner);
         authoritiesSpinner = findViewById(R.id.authoritiesSpinner);
+        maxDistanceSeekBar = findViewById(R.id.maxDistanceLimitSeekBar);
+        maxDistanceLimit = getIntent()
+                .getFloatExtra("maxDistanceLimit", 3);
+        maxDistanceSeekBar.setProgress((int) (maxDistanceLimit * 10));
+        maxDistanceSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        seekBarCurrentProgressTextView =
+                findViewById(R.id.seekBarCurrentProgressTextView);
+        seekBarCurrentProgressTextView.setText(String.valueOf(
+                convertIntToFloat(maxDistanceSeekBar.getProgress())
+                ));
         Log.i(TAG, "Populating business types Spinner");
         new PopulateFiltersAsyncTask(
                 getApplicationContext(),
@@ -37,8 +52,37 @@ public class SearchFiltersActivity extends AppCompatActivity {
         ).execute();
     }
 
+    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            seekBarCurrentProgressTextView.setText(
+                    String.valueOf(convertIntToFloat(progress))
+            );
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            maxDistanceLimit = convertIntToFloat(seekBar.getProgress());
+
+        }
+    };
+
+    public float convertIntToFloat(int progress) {
+        return .1f * progress;
+    }
+
     public void clearFilterChanges(View view) {
         Log.i(TAG, "Clearing all filter changes");
+        maxDistanceSeekBar.setProgress(30);
+        seekBarCurrentProgressTextView.setText(String.valueOf(
+                convertIntToFloat(maxDistanceSeekBar.getProgress())
+                ));
         new PopulateFiltersAsyncTask(
                 getApplicationContext(),
                 businessTypesSpinner,
@@ -85,7 +129,8 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 )
         );
         searchScreenIntent.putExtra(
-                "businessTypePosition", businessTypesSpinner.getSelectedItemPosition()
+                "businessTypePosition",
+                businessTypesSpinner.getSelectedItemPosition()
         );
         searchScreenIntent.putExtra(
                 "region",
@@ -94,7 +139,8 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 )
         );
         searchScreenIntent.putExtra(
-                "regionPosition", regionSpinner.getSelectedItemPosition()
+                "regionPosition",
+                regionSpinner.getSelectedItemPosition()
         );
         searchScreenIntent.putExtra(
                 "authority",
@@ -103,7 +149,17 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 )
         );
         searchScreenIntent.putExtra(
-                "authorityPosition", authoritiesSpinner.getSelectedItemPosition()
+                "authorityPosition",
+                authoritiesSpinner.getSelectedItemPosition()
+        );
+        searchScreenIntent.putExtra(
+                "maxDistanceLimit",
+                maxDistanceLimit
+        );
+        Log.i(TAG, String.format("submitFilters: searchValue is %s", getIntent().getStringExtra("searchValue")));
+        searchScreenIntent.putExtra(
+                "searchValue",
+                getIntent().getStringExtra("searchValue")
         );
         startActivity(searchScreenIntent);
     }

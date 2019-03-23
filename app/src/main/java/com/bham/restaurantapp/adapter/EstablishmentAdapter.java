@@ -35,9 +35,12 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        holder.constraintLayout.setText(establishmentsList.get(position).getBusinessName());
         holder.establishmentNameTextView.setText(establishmentsList.get(position).getBusinessName());
-        holder.establishmentRatingBar.setRating(Float.parseFloat(this.establishmentsList.get(position).getRatingValue()));
+        try {
+            holder.establishmentRatingBar.setRating(Float.parseFloat(this.establishmentsList.get(position).getRatingValue()));
+        } catch (NumberFormatException n) {
+            holder.establishmentRatingBar.setRating(0);
+        }
         String establishmentDistance = this.establishmentsList.get(position).getDistance();
         if (establishmentDistance != null) {
             holder.establishmentDistTextView.setText(establishmentDistance);
@@ -50,8 +53,6 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout constraintLayout;
-        ConstraintLayout ratingNameRatingContainer;
         TextView establishmentNameTextView;
         RatingBar establishmentRatingBar;
         TextView establishmentDistTextView;
@@ -59,8 +60,6 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            constraintLayout = itemView.findViewById(R.id.establishmentItemConstraintLayout);
-            ratingNameRatingContainer = itemView.findViewById(R.id.ratingNameRatingContainer);
             establishmentNameTextView = itemView.findViewById(R.id.establishmentNameTextView);
             establishmentRatingBar = itemView.findViewById(R.id.establishmentRatingBar);
             establishmentDistTextView = itemView.findViewById(R.id.establishmentDistTextView);

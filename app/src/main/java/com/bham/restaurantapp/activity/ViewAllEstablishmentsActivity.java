@@ -23,9 +23,12 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null) {
+            this.pageNumber = savedInstanceState.getInt("pageNumber");
+            this.pageSize = savedInstanceState.getInt("pageSize");
+        } else {
             this.pageNumber = 1;
-            this.pageSize = 10;
+            this.pageSize = 9;
         }
         setContentView(R.layout.activity_view_all_establishments);
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
@@ -33,13 +36,21 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
         rView.setHasFixedSize(true);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rView.setLayoutManager(lm);
-        new EstablishmentsAsyncTask(this.rView, this.pageNumberTextView).execute(String.valueOf(pageNumber), String.valueOf(pageSize));
+        new EstablishmentsAsyncTask(
+                getApplicationContext(),
+                this.rView,
+                this.pageNumberTextView
+        ).execute(String.valueOf(pageNumber), String.valueOf(pageSize));
     }
 
     public void onGoToPreviousPage(View view) {
         this.pageNumber -= 1;
         if (this.pageNumber != 0) {
-            new EstablishmentsAsyncTask(this.rView, this.pageNumberTextView)
+            new EstablishmentsAsyncTask(
+                    getApplicationContext(),
+                    this.rView,
+                    this.pageNumberTextView
+            )
                     .execute(String.valueOf(this.pageNumber), String.valueOf(this.pageSize));
         } else
             this.pageNumber += 1;
@@ -48,7 +59,11 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
 
     public void onGoToNextPage(View view) {
         this.pageNumber += 1;
-        new EstablishmentsAsyncTask(this.rView, this.pageNumberTextView)
+        new EstablishmentsAsyncTask(
+                getApplicationContext(),
+                this.rView,
+                this.pageNumberTextView
+        )
                 .execute(String.valueOf(this.pageNumber), String.valueOf(this.pageSize));
     }
 

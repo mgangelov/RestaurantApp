@@ -128,7 +128,7 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
             return db.authorityDAO().getAllFilteredCursor();
         }
 
-        else return db.authorityDAO().findAuthorityByRegionId(
+        else return db.authorityDAO().findAuthorityByRegionIdCursor(
                 Integer.parseInt(constraint.toString()));
     };
 }

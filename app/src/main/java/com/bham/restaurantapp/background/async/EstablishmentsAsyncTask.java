@@ -1,5 +1,6 @@
 package com.bham.restaurantapp.background.async;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
@@ -14,30 +15,50 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class EstablishmentsAsyncTask extends AsyncTask<String, Void, EstablishmentResult> {
+    private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
 
-    public EstablishmentsAsyncTask(RecyclerView rView, TextView pageNumberTextView) {
+    public EstablishmentsAsyncTask(
+            Context applicationContext,
+            RecyclerView rView,
+            TextView pageNumberTextView
+    ) {
+        this.applicationContext = new WeakReference<>(applicationContext);
         this.rView = new WeakReference<>(rView);
         this.pageNumberTextView = new WeakReference<>(pageNumberTextView);
     }
 
     @Override
     protected EstablishmentResult doInBackground(String... strings) {
-        FsaDataController fsaAPI = new FsaDataController();
+        FsaDataController fsaAPI = new FsaDataController(
+                applicationContext.get()
+        );
         try {
             if (strings.length == 2)
                 return fsaAPI.getEstablishments(
                         Integer.valueOf(strings[0]), // pageNumber
                         Integer.valueOf(strings[1]) // pageSize
                 );
-            else if (strings.length == 5)
+            else if (strings.length == 6)
+                return fsaAPI.getEstablishments(
+                        strings[0], // searchValue
+                        Integer.valueOf(strings[1]), // businessType
+                        Integer.valueOf(strings[2]), // region
+                        Integer.valueOf(strings[3]), // authority
+                        Integer.valueOf(strings[4]), // pageNumber
+                        Integer.valueOf(strings[5]) // pageSize
+                );
+            else if (strings.length == 8)
                 return fsaAPI.getEstablishments(
                         strings[0], // Longitude
                         strings[1], // Latitude
-                        Float.valueOf(strings[2]), // maxDistance
-                        Integer.valueOf(strings[3]), // pageNumber
-                        Integer.valueOf(strings[4]) // pageSize
+                        Integer.valueOf(strings[2]), // businessType
+                        Integer.valueOf(strings[3]), // region
+                        Integer.valueOf(strings[4]), // authority
+                        Float.valueOf(strings[5]), // maxDistanceLimit
+                        Integer.valueOf(strings[6]), // pageNumber
+                        Integer.valueOf(strings[7]) // pageSize
                 );
         } catch (IOException e) {
             e.printStackTrace();
