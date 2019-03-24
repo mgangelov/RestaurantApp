@@ -34,6 +34,8 @@ public class Establishment implements Parcelable {
     private GeoCode geocode;
     @SerializedName("Distance")
     private String distance;
+    @SerializedName("LocalAuthorityName")
+    private String localAuthorityName;
     private ResponseMetadata meta;
 
     protected Establishment(Parcel in) {
@@ -204,5 +206,13 @@ public class Establishment implements Parcelable {
 
     public void setBusinessType(String businessType) {
         this.businessType = businessType;
+    }
+
+    public String getLocalAuthorityName() {
+        return localAuthorityName;
+    }
+
+    public void setLocalAuthorityName(String localAuthorityName) {
+        this.localAuthorityName = localAuthorityName;
     }
 }

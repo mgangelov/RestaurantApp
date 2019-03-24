@@ -36,7 +36,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_establishments);
+        setContentView(R.layout.activity_view_establishments_list);
 
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
         rView = findViewById(R.id.testRecyclerView);

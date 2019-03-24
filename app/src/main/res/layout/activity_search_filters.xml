@@ -159,6 +159,18 @@
             app:layout_constraintTop_toBottomOf="@id/minRatingTextView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.button.MaterialButton
+        app:layout_constraintTop_toBottomOf="@id/minRatingConstraintLayout"
+        android:id="@+id/clearFiltersMaterialButton"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clearFilterChanges"
+        android:text="@string/clear_filters_button_text"
+        app:backgroundTint="@color/design_default_color_primary" />
+
 
     <LinearLayout
         android:id="@+id/searchFiltersLinearLayout"
@@ -171,12 +183,12 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/clearFiltersMaterialButton"
+            android:id="@+id/dismissFiltersMaterialButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="clearFilterChanges"
-            android:text="@string/clear_filters_button_text"
-            app:backgroundTint="@color/design_default_color_primary" />
+            android:backgroundTint="@color/colorPrimary"
+            android:onClick="dismissChanges"
+            android:text="@string/dismiss_changes_button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submitFiltersMaterialButton"

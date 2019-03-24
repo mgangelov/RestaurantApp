@@ -11,7 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bham.restaurantapp.R;
-import com.bham.restaurantapp.activity.EstablishmentView;
+import com.bham.restaurantapp.activity.EstablishmentViewActivity;
 import com.bham.restaurantapp.model.fsa.Establishment;
 
 import java.util.List;
@@ -42,13 +42,14 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.establishmentNameTextView.setText(establishmentsList.get(position).getBusinessName());
+        Establishment currentEstablishment = establishmentsList.get(position);
+        holder.establishmentNameTextView.setText(currentEstablishment.getBusinessName());
         try {
-            holder.establishmentRatingBar.setRating(Float.parseFloat(this.establishmentsList.get(position).getRatingValue()));
+            holder.establishmentRatingBar.setRating(Float.parseFloat(currentEstablishment.getRatingValue()));
         } catch (NumberFormatException n) {
             holder.establishmentRatingBar.setRating(0);
         }
-        String establishmentDistance = this.establishmentsList.get(position).getDistance();
+        String establishmentDistance = currentEstablishment.getDistance();
         if (establishmentDistance != null) {
             holder.establishmentDistTextView.setText(establishmentDistance);
         }
@@ -58,13 +59,41 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
                 holder.itemView.getResources().getIdentifier(
                         String.format(
                                 "btypeid%s",
-                                establishmentsList.get(position).getBusinessTypeID()
+                                currentEstablishment.getBusinessTypeID()
                         ),
                         "color",
                         holder.itemView.getContext().getPackageName()
                 )));
         border.setStroke(1, 0xFF000000);
         holder.itemView.setBackground(border);
+        holder.itemView.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: clicked " + v.toString());
+            v.setSelected(true);
+            v.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.fade_in));
+            Intent i = new Intent(holder.itemView.getContext(), EstablishmentViewActivity.class);
+            i.putExtra("businessName", currentEstablishment.getBusinessName());
+            i.putExtra("businessType", currentEstablishment.getBusinessType());
+            i.putExtra("businessTypeId", Integer.parseInt(currentEstablishment.getBusinessTypeID()));
+            StringBuilder addressLine = new StringBuilder();
+            if (!currentEstablishment.getAddressLine1().equals(""))
+                addressLine.append(currentEstablishment.getAddressLine1()).append(",\n");
+            if (!currentEstablishment.getAddressLine2().equals(""))
+                addressLine.append(currentEstablishment.getAddressLine2()).append(",\n");
+            if (!currentEstablishment.getAddressLine3().equals(""))
+                addressLine.append(currentEstablishment.getAddressLine3()).append(",\n");
+            if (!currentEstablishment.getAddressLine4().equals(""))
+                addressLine.append(currentEstablishment.getAddressLine4()).append(",\n");
+            if (!currentEstablishment.getPostCode().equals(""))
+                addressLine.append(currentEstablishment.getPostCode());
+            i.putExtra(
+                    "addressLine",
+                    addressLine.toString()
+            );
+            i.putExtra("ratingValue", Integer.valueOf(currentEstablishment.getRatingValue()));
+            i.putExtra("ratingDate", currentEstablishment.getRatingDate());
+            i.putExtra("localAuthorityName", currentEstablishment.getLocalAuthorityName());
+            holder.itemView.getContext().startActivity(i);
+        });
     }
 
     @Override
@@ -73,7 +102,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView establishmentNameTextView;
         RatingBar establishmentRatingBar;
         TextView establishmentDistTextView;
@@ -84,17 +113,6 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             establishmentNameTextView = itemView.findViewById(R.id.establishmentNameTextView);
             establishmentRatingBar = itemView.findViewById(R.id.establishmentRatingBar);
             establishmentDistTextView = itemView.findViewById(R.id.establishmentDistTextView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Log.i(TAG, "onClick: clicked " + v.toString());
-            v.setSelected(true);
-            v.startAnimation(AnimationUtils.loadAnimation(itemView.getContext(), android.R.anim.fade_in));
-            Intent i = new Intent(itemView.getContext(), EstablishmentView.class);
-            i.putExtra("id", establishmentNameTextView.getText());
-            itemView.getContext().startActivity(i);
         }
     }
 }

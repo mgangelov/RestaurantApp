@@ -22,4 +22,16 @@
     <string name="max_distance_limit_text_view">Maximum distance</string>
     <string name="sort_by_text_view">Sort by:</string>
     <string name="min_rating_text_view">Minimum hygiene rating</string>
+    <string name="establishment_business_name">Business name:</string>
+    <string name="rating_date">Date rating:</string>
+    <string name="rated_by_authority">Rated by authority: %s</string>
+    <string name="business_type">Type of business: </string>
+    <string name="establishment_address_line">Address:</string>
+    <string name="rating_date_title">Rating Date</string>
+    <string name="rating_authority_title">Rating authority</string>
+    <string name="business_type_title">Business Type</string>
+    <string name="establishment_address_title">Address</string>
+    <string name="add_to_favourites_button">Add to favourites</string>
+    <string name="back_to_results_button">Back to results</string>
+    <string name="dismiss_changes_button">Dismiss changes</string>
 </resources>

@@ -36,6 +36,10 @@ public class SearchFiltersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_filters);
+        populateFilterSettings();
+    }
+
+    private void populateFilterSettings() {
         businessTypesSpinner = findViewById(R.id.businessTypesSpinner);
         regionSpinner = findViewById(R.id.regionsSpinner);
         authoritiesSpinner = findViewById(R.id.authoritiesSpinner);
@@ -211,4 +215,8 @@ public class SearchFiltersActivity extends AppCompatActivity {
         startActivity(searchScreenIntent);
     }
 
+    public void dismissChanges(View view) {
+        populateFilterSettings();
+        this.finish();
+    }
 }

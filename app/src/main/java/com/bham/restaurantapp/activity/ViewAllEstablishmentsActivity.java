@@ -36,7 +36,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
         }
         ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
         sortOptionKey = getIntent().getStringExtra("sortOptionKey");
-        setContentView(R.layout.activity_view_establishments);
+        setContentView(R.layout.activity_view_establishments_list);
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
         rView = findViewById(R.id.testRecyclerView);
         rView.setHasFixedSize(true);
