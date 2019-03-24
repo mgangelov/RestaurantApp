@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.SearchFiltersActivity"></activity>
+        <activity android:name=".activity.EstablishmentView"></activity>
+        <activity android:name=".activity.SearchFiltersActivity" />
         <activity android:name=".activity.ViewAllEstablishmentsActivity" />
         <activity android:name=".activity.EstablishmentListViewActivity" />
         <activity android:name=".activity.SearchScreenActivity">

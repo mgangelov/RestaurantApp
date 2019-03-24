@@ -13,15 +13,26 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.selection.ItemDetailsLookup;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdapter.MyViewHolder> {
     private List<Establishment> establishmentsList;
+    private SelectionTracker<Establishment> selectionTracker;
 
     public EstablishmentAdapter(List<Establishment> establishmentsList) {
+        this.setHasStableIds(true);
         this.establishmentsList = establishmentsList;
     }
 
+    public void setSelectionTracker(SelectionTracker<Establishment> selectionTracker) {
+        this.selectionTracker = selectionTracker;
+    }
+
+    public SelectionTracker<Establishment> getSelectionTracker() {
+        return selectionTracker;
+    }
 
     @NonNull
     @Override
@@ -45,6 +56,8 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         if (establishmentDistance != null) {
             holder.establishmentDistTextView.setText(establishmentDistance);
         }
+        Establishment currentItem = establishmentsList.get(position);
+        holder.bind(currentItem, selectionTracker.isSelected(currentItem));
     }
 
     @Override
@@ -52,7 +65,8 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         return this.establishmentsList.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView establishmentNameTextView;
         RatingBar establishmentRatingBar;
         TextView establishmentDistTextView;
@@ -64,6 +78,18 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             establishmentRatingBar = itemView.findViewById(R.id.establishmentRatingBar);
             establishmentDistTextView = itemView.findViewById(R.id.establishmentDistTextView);
         }
+
+        ItemDetailsLookup.ItemDetails<Establishment> getItemDetails() {
+            return new EstablishmentDetail(
+                    getAdapterPosition(),
+                    establishmentsList.get(getAdapterPosition())
+            );
+        }
+
+        public void bind(Establishment currentItem, boolean selected) {
+           itemView.setActivated(selected);
+        }
     }
 
 }
+

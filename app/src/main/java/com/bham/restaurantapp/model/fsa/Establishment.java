@@ -34,6 +34,32 @@ public class Establishment implements Parcelable {
     private String distance;
     private ResponseMetadata meta;
 
+    protected Establishment(Parcel in) {
+        fhrsId = in.readString();
+        businessName = in.readString();
+        businessType = in.readString();
+        addressLine1 = in.readString();
+        addressLine2 = in.readString();
+        addressLine3 = in.readString();
+        addressLine4 = in.readString();
+        postCode = in.readString();
+        ratingValue = in.readString();
+        ratingDate = in.readString();
+        distance = in.readString();
+    }
+
+    public static final Creator<Establishment> CREATOR = new Creator<Establishment>() {
+        @Override
+        public Establishment createFromParcel(Parcel in) {
+            return new Establishment(in);
+        }
+
+        @Override
+        public Establishment[] newArray(int size) {
+            return new Establishment[size];
+        }
+    };
+
     public String getAddressLine1() {
         return addressLine1;
     }
@@ -157,6 +183,16 @@ public class Establishment implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(fhrsId);
+        dest.writeString(businessName);
+        dest.writeString(businessType);
+        dest.writeString(addressLine1);
+        dest.writeString(addressLine2);
+        dest.writeString(addressLine3);
+        dest.writeString(addressLine4);
+        dest.writeString(postCode);
+        dest.writeString(ratingValue);
+        dest.writeString(ratingDate);
+        dest.writeString(distance);
     }
 }
