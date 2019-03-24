@@ -36,7 +36,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
         }
         ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
         sortOptionKey = getIntent().getStringExtra("sortOptionKey");
-        setContentView(R.layout.activity_view_all_establishments);
+        setContentView(R.layout.activity_view_establishments);
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
         rView = findViewById(R.id.testRecyclerView);
         rView.setHasFixedSize(true);
@@ -64,8 +64,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                     .execute(
                             String.valueOf(this.pageNumber),
                             String.valueOf(this.pageSize),
-                            sortOptionKey,
-                            String.valueOf(ratingKey)
+                            sortOptionKey
                     );
         } else
             this.pageNumber += 1;
@@ -82,8 +81,7 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
                 .execute(
                         String.valueOf(this.pageNumber),
                         String.valueOf(this.pageSize),
-                        sortOptionKey,
-                        String.valueOf(ratingKey)
+                        sortOptionKey
                 );
     }
 

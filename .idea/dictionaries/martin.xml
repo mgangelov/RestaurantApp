@@ -1,6 +1,8 @@
 <component name="ProjectDictionaryState">
   <dictionary name="martin">
     <words>
+      <w>btype</w>
+      <w>btypeid</w>
       <w>businesstypeid</w>
       <w>businesstypes</w>
       <w>countryid</w>
@@ -9,12 +11,17 @@
       <w>localauthorityid</w>
       <w>maxdistance</w>
       <w>maxdistancelimit</w>
+      <w>mobilecaterer</w>
+      <w>othercatering</w>
+      <w>otherretailers</w>
       <w>pagenumber</w>
       <w>pagesize</w>
       <w>ratingkey</w>
       <w>schemetypeid</w>
       <w>sortoptionkey</w>
       <w>sortoptions</w>
+      <w>supermarketretailers</w>
+      <w>takeway</w>
     </words>
   </dictionary>
 </component>

@@ -10,7 +10,9 @@ public class Establishment implements Parcelable {
     private String fhrsId;
     @SerializedName("BusinessName")
     private String businessName;
-    @SerializedName("BusinessTypeEntity")
+    @SerializedName("BusinessTypeID")
+    private String businessTypeID;
+    @SerializedName("BusinessType")
     private String businessType;
     @SerializedName("AddressLine1")
     private String addressLine1;
@@ -37,7 +39,7 @@ public class Establishment implements Parcelable {
     protected Establishment(Parcel in) {
         fhrsId = in.readString();
         businessName = in.readString();
-        businessType = in.readString();
+        businessTypeID = in.readString();
         addressLine1 = in.readString();
         addressLine2 = in.readString();
         addressLine3 = in.readString();
@@ -168,12 +170,12 @@ public class Establishment implements Parcelable {
         this.businessName = businessName;
     }
 
-    public String getBusinessType() {
-        return businessType;
+    public String getBusinessTypeID() {
+        return businessTypeID;
     }
 
-    public void setBusinessType(String businessType) {
-        this.businessType = businessType;
+    public void setBusinessTypeID(String businessTypeID) {
+        this.businessTypeID = businessTypeID;
     }
 
     @Override
@@ -185,7 +187,7 @@ public class Establishment implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(fhrsId);
         dest.writeString(businessName);
-        dest.writeString(businessType);
+        dest.writeString(businessTypeID);
         dest.writeString(addressLine1);
         dest.writeString(addressLine2);
         dest.writeString(addressLine3);
@@ -194,5 +196,13 @@ public class Establishment implements Parcelable {
         dest.writeString(ratingValue);
         dest.writeString(ratingDate);
         dest.writeString(distance);
+    }
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
     }
 }

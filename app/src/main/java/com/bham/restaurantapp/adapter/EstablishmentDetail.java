@@ -5,11 +5,11 @@ import com.bham.restaurantapp.model.fsa.Establishment;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 
-class EstablishmentDetail extends ItemDetailsLookup.ItemDetails<Establishment> {
+public class EstablishmentDetail extends ItemDetailsLookup.ItemDetails<Establishment> {
     private int adapterPosition;
     private final Establishment selectionKey;
 
-    public EstablishmentDetail(int adapterPosition, Establishment selectionKey) {
+    EstablishmentDetail(int adapterPosition, Establishment selectionKey) {
         this.adapterPosition = adapterPosition;
         this.selectionKey = selectionKey;
     }
