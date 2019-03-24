@@ -34,4 +34,6 @@
     <string name="add_to_favourites_button">Add to favourites</string>
     <string name="back_to_results_button">Back to results</string>
     <string name="dismiss_changes_button">Dismiss changes</string>
+    <string name="remove_favourite_establishment">Remove from favourites</string>
+    <string name="delete_favourites">Delete Favourites</string>
 </resources>

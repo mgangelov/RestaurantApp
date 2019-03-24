@@ -157,11 +157,21 @@ public class SearchScreenActivity extends AppCompatActivity {
         outState.putString("searchValue", establishmentSearchEditText.getText().toString());
     }
 
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        Log.i(TAG, "Restoring state");
-//        establishmentSearchEditText.setText(savedInstanceState.getString("searchTerm"));
-//
-//    }
+    public void deleteFavourites(View view) {
+        final AlertDialog.Builder successAlert = new AlertDialog.Builder(this)
+                .setTitle("Success")
+                .setMessage("Favourites removed")
+                .setPositiveButton(android.R.string.yes, null);
+
+        AlertDialog.Builder confirmationAlertDialog = new AlertDialog.Builder(this);
+        confirmationAlertDialog.setTitle("Refresh DB");
+        confirmationAlertDialog.setMessage("Are you sure you want to delete favourites?");
+        confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
+                new RefreshDbAsyncTask(getApplicationContext(), successAlert)
+                        .execute());
+        confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
+        confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+        confirmationAlertDialog.show();
+
+    }
 }

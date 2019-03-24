@@ -71,6 +71,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             v.setSelected(true);
             v.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), android.R.anim.fade_in));
             Intent i = new Intent(holder.itemView.getContext(), EstablishmentViewActivity.class);
+            i.putExtra("fhrsId", Integer.parseInt(currentEstablishment.getFhrsId()));
             i.putExtra("businessName", currentEstablishment.getBusinessName());
             i.putExtra("businessType", currentEstablishment.getBusinessType());
             i.putExtra("businessTypeId", Integer.parseInt(currentEstablishment.getBusinessTypeID()));
