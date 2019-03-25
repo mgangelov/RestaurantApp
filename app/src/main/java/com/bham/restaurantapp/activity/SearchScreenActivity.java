@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.bham.restaurantapp.R;
+import com.bham.restaurantapp.background.async.DeleteAllFavouritesAsyncTask;
 import com.bham.restaurantapp.background.async.RefreshDbAsyncTask;
 import com.bham.restaurantapp.background.async.SearchScreenAsyncTask;
 import com.google.android.material.button.MaterialButton;
@@ -121,7 +122,7 @@ public class SearchScreenActivity extends AppCompatActivity {
                 "This will delete all database data.");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
                 new RefreshDbAsyncTask(getApplicationContext(), successAlert)
-                .execute());
+                        .execute());
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
         confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);
         confirmationAlertDialog.show();
@@ -164,14 +165,20 @@ public class SearchScreenActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, null);
 
         AlertDialog.Builder confirmationAlertDialog = new AlertDialog.Builder(this);
-        confirmationAlertDialog.setTitle("Refresh DB");
+        confirmationAlertDialog.setTitle("Delete favourites");
         confirmationAlertDialog.setMessage("Are you sure you want to delete favourites?");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
-                new RefreshDbAsyncTask(getApplicationContext(), successAlert)
-                        .execute());
+                new DeleteAllFavouritesAsyncTask(getApplicationContext(), successAlert)
+                        .execute()
+        );
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
         confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);
         confirmationAlertDialog.show();
 
+    }
+
+    public void openFavourites(View view) {
+        Intent openFavouritesIntent = new Intent(this, FavouritesListViewActivity.class);
+        startActivity(openFavouritesIntent);
     }
 }

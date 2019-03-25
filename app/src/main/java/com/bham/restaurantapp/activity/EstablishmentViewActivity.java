@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bham.restaurantapp.Globals;
 import com.bham.restaurantapp.R;
-import com.bham.restaurantapp.background.async.FavouriteEstablishmentAsyncTask;
+import com.bham.restaurantapp.background.async.AddFavouriteEstablishmentAsyncTask;
 import com.bham.restaurantapp.model.db.entities.EstablishmentEntity;
 import com.google.android.material.button.MaterialButton;
 
@@ -23,22 +23,35 @@ import androidx.core.content.ContextCompat;
 public class EstablishmentViewActivity extends AppCompatActivity {
     private static final String TAG = "EstablishmentViewActivity";
     private EstablishmentEntity establishmentEntity;
+    private MaterialButton addToFavouritesMaterialButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_establishment_view);
+        addToFavouritesMaterialButton = findViewById(R.id.addToFavouritesButton);
         establishmentEntity = new EstablishmentEntity(
                 getIntent().getIntExtra("fhrsId", 0),
                 getIntent().getStringExtra("businessName"),
                 getIntent().getStringExtra("businessType"),
                 getIntent().getIntExtra("businessTypeId", 9999),
-                getIntent().getStringExtra("addressLine"),
+                getIntent().getStringExtra("addressLine1"),
+                getIntent().getStringExtra("addressLine2"),
+                getIntent().getStringExtra("addressLine3"),
+                getIntent().getStringExtra("addressLine4"),
+                getIntent().getStringExtra("postCode"),
                 getIntent().getIntExtra("ratingValue", 0),
                 getIntent().getStringExtra("ratingDate"),
                 getIntent().getStringExtra("localAuthorityName")
         );
 
+        new AddFavouriteEstablishmentAsyncTask(
+                getApplicationContext(),
+                addToFavouritesMaterialButton,
+                Globals.MODES.CHECK_MODE
+        ).execute(
+                establishmentEntity
+        );
 
         TextView establishmentTitleTextView =
                 findViewById(R.id.establishmentTitleTextView);
@@ -87,8 +100,28 @@ public class EstablishmentViewActivity extends AppCompatActivity {
 
         TextView establishmentAddressTextView =
                 findViewById(R.id.establishmentAddressTextView);
+        StringBuilder addressLine = new StringBuilder();
+        if (getIntent().getStringExtra("addressLine1") != null)
+            addressLine
+                    .append(getIntent().getStringExtra("addressLine1"))
+                    .append(",\n");
+        if (getIntent().getStringExtra("addressLine2") != null)
+            addressLine
+                    .append(getIntent().getStringExtra("addressLine2"))
+                    .append(",\n");
+        if (getIntent().getStringExtra("addressLine3") != null)
+            addressLine
+                    .append(getIntent().getStringExtra("addressLine3"))
+                    .append(",\n");
+        if (getIntent().getStringExtra("addressLine4") != null)
+            addressLine
+                    .append(getIntent().getStringExtra("addressLine4"))
+                    .append(",\n");
+        if (getIntent().getStringExtra("postCode") != null)
+            addressLine
+                    .append(getIntent().getStringExtra("postCode"));
         establishmentAddressTextView.setText(
-                establishmentEntity.addressLine
+                addressLine.toString()
         );
 
         RatingBar establishmentRatingRatingBar =
@@ -106,24 +139,25 @@ public class EstablishmentViewActivity extends AppCompatActivity {
     public void addEstablishmentToFavourites(View view) {
         final AlertDialog.Builder successAlert = new AlertDialog.Builder(this)
                 .setPositiveButton(android.R.string.yes, null);
-        MaterialButton addToFavouritesMaterialButton = findViewById(R.id.addToFavouritesButton);
-        if (addToFavouritesMaterialButton.getText().equals(getString(R.string.add_to_favourites_button)))
+        if (addToFavouritesMaterialButton.getText().equals(getString(R.string.add_to_favourites_button))) {
             Log.i(TAG, "addEstablishmentToFavourites: Adding to favourites");
-            new FavouriteEstablishmentAsyncTask(
+            new AddFavouriteEstablishmentAsyncTask(
                     getApplicationContext(),
                     addToFavouritesMaterialButton,
                     Globals.MODES.ADD_MODE,
                     successAlert).execute(
                     establishmentEntity
             );
-        if (addToFavouritesMaterialButton.getText().equals(getString(R.string.remove_favourite_establishment)))
+        }
+        if (addToFavouritesMaterialButton.getText().equals(getString(R.string.remove_favourite_establishment))) {
             Log.i(TAG, "addEstablishmentToFavourites: Removing from favourites");
-            new FavouriteEstablishmentAsyncTask(
+            new AddFavouriteEstablishmentAsyncTask(
                     getApplicationContext(),
                     addToFavouritesMaterialButton,
                     Globals.MODES.REMOVE_MODE,
                     successAlert).execute(
                     establishmentEntity
             );
+        }
     }
 }

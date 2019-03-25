@@ -24,8 +24,23 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdapter.MyViewHolder> {
     private static final String TAG = "EstablishmentAdapter";
     private List<Establishment> establishmentsList;
+    private List<Boolean> isFavourites;
 
-    public EstablishmentAdapter(List<Establishment> establishmentsList) {
+    public EstablishmentAdapter(
+            List<Establishment> establishmentsList,
+            List<Boolean> isFavourites
+    ) {
+        this.setHasStableIds(true);
+        this.isFavourites = isFavourites;
+        this.establishmentsList = establishmentsList;
+        if (isFavourites.size() != establishmentsList.size())
+            throw new RuntimeException("isFavourites list size is not " +
+                    "the same as the number of establishments");
+    }
+
+    public EstablishmentAdapter(
+            List<Establishment> establishmentsList
+    ) {
         this.setHasStableIds(true);
         this.establishmentsList = establishmentsList;
     }
@@ -66,6 +81,12 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
                 )));
         border.setStroke(1, 0xFF000000);
         holder.itemView.setBackground(border);
+        
+        if (isFavourites != null && isFavourites.get(position))
+            holder.establishmentFavTextView.setText(
+                    holder.itemView.getResources().getString(R.string.favourite_flag)
+            );
+        
         holder.itemView.setOnClickListener(v -> {
             Log.i(TAG, "onClick: clicked " + v.toString());
             v.setSelected(true);
@@ -75,24 +96,36 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             i.putExtra("businessName", currentEstablishment.getBusinessName());
             i.putExtra("businessType", currentEstablishment.getBusinessType());
             i.putExtra("businessTypeId", Integer.parseInt(currentEstablishment.getBusinessTypeID()));
-            StringBuilder addressLine = new StringBuilder();
-            if (!currentEstablishment.getAddressLine1().equals(""))
-                addressLine.append(currentEstablishment.getAddressLine1()).append(",\n");
-            if (!currentEstablishment.getAddressLine2().equals(""))
-                addressLine.append(currentEstablishment.getAddressLine2()).append(",\n");
-            if (!currentEstablishment.getAddressLine3().equals(""))
-                addressLine.append(currentEstablishment.getAddressLine3()).append(",\n");
-            if (!currentEstablishment.getAddressLine4().equals(""))
-                addressLine.append(currentEstablishment.getAddressLine4()).append(",\n");
-            if (!currentEstablishment.getPostCode().equals(""))
-                addressLine.append(currentEstablishment.getPostCode());
-            i.putExtra(
-                    "addressLine",
-                    addressLine.toString()
-            );
+            if (
+                    currentEstablishment.getAddressLine1() != null &&
+                    !currentEstablishment.getAddressLine1().equals("")
+            )
+                i.putExtra("addressLine1", currentEstablishment.getAddressLine1());
+            if (
+                    currentEstablishment.getAddressLine2() != null &&
+                    !currentEstablishment.getAddressLine2().equals("")
+            )
+                i.putExtra("addressLine2", currentEstablishment.getAddressLine2());
+            if (
+                    currentEstablishment.getAddressLine3() != null &&
+                    !currentEstablishment.getAddressLine3().equals("")
+            )
+                i.putExtra("addressLine3", currentEstablishment.getAddressLine3());
+            if (
+                    currentEstablishment.getAddressLine4() != null &&
+                    !currentEstablishment.getAddressLine4().equals("")
+            )
+                i.putExtra("addressLine4", currentEstablishment.getAddressLine4());
+            if (
+                    currentEstablishment.getPostCode() != null &&
+                    !currentEstablishment.getPostCode().equals("")
+            )
+                i.putExtra("postCode", currentEstablishment.getPostCode());
             i.putExtra("ratingValue", Integer.valueOf(currentEstablishment.getRatingValue()));
             i.putExtra("ratingDate", currentEstablishment.getRatingDate());
             i.putExtra("localAuthorityName", currentEstablishment.getLocalAuthorityName());
+            if (currentEstablishment.getDistance() != null)
+                i.putExtra("distance", currentEstablishment.getDistance());
             holder.itemView.getContext().startActivity(i);
         });
     }
@@ -107,6 +140,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         TextView establishmentNameTextView;
         RatingBar establishmentRatingBar;
         TextView establishmentDistTextView;
+        TextView establishmentFavTextView;
 
 
         MyViewHolder(@NonNull View itemView) {
@@ -114,6 +148,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             establishmentNameTextView = itemView.findViewById(R.id.establishmentNameTextView);
             establishmentRatingBar = itemView.findViewById(R.id.establishmentRatingBar);
             establishmentDistTextView = itemView.findViewById(R.id.establishmentDistTextView);
+            establishmentFavTextView = itemView.findViewById(R.id.establishmentFavTextView);
         }
     }
 }

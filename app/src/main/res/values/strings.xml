@@ -36,4 +36,8 @@
     <string name="dismiss_changes_button">Dismiss changes</string>
     <string name="remove_favourite_establishment">Remove from favourites</string>
     <string name="delete_favourites">Delete Favourites</string>
+    <string name="view_favourites_text">View favourites</string>
+    <string name="search_results_establishments_title">Search results</string>
+    <string name="view_favourites_title">Favourite establishments</string>
+    <string name="favourite_flag">Favourite</string>
 </resources>

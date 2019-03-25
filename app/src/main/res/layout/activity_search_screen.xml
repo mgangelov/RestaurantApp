@@ -78,6 +78,14 @@
             android:text="@string/search_button_text" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/viewFavouritesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/pinkFavourite"
+            android:onClick="openFavourites"
+            android:text="@string/view_favourites_text" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/viewAllEstablishmentsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,13 +93,13 @@
             android:onClick="viewAllEstablishmentsEnquiry"
             android:text="@string/view_all_button_text" />
 
-        <TextView
-            android:id="@+id/filtersSelectedTextView"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+        <!--<TextView-->
+            <!--android:id="@+id/filtersSelectedTextView"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />-->
     </LinearLayout>
 
     <LinearLayout

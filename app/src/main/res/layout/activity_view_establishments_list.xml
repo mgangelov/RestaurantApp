@@ -8,13 +8,11 @@
     tools:context=".activity.ViewAllEstablishmentsActivity">
 
     <TextView
-        android:id="@+id/allEstablishmentsTextView"
+        android:id="@+id/establishmentsTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/all_establishments_text_view_text"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:background="@android:color/holo_blue_bright"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -24,7 +22,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@id/allEstablishmentsTextView"
+        app:layout_constraintTop_toBottomOf="@id/establishmentsTitleTextView"
         app:layout_constraintBottom_toTopOf="@id/allEstablishmentsButtonsConstraintLayout"
         />
 

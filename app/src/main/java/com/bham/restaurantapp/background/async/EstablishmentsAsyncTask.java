@@ -6,12 +6,17 @@ import android.widget.TextView;
 
 import com.bham.restaurantapp.adapter.EstablishmentAdapter;
 import com.bham.restaurantapp.background.controller.FsaDataController;
+import com.bham.restaurantapp.model.db.FsaDatabase;
+import com.bham.restaurantapp.model.fsa.Establishment;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 
 public class EstablishmentsAsyncTask extends AsyncTask<String, Void, EstablishmentResult> {
@@ -19,6 +24,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
+    private List<Boolean> isFavourites;
 
     public EstablishmentsAsyncTask(
             Context applicationContext,
@@ -28,22 +34,25 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
         this.applicationContext = new WeakReference<>(applicationContext);
         this.rView = new WeakReference<>(rView);
         this.pageNumberTextView = new WeakReference<>(pageNumberTextView);
+        this.isFavourites = new ArrayList<>();
     }
 
     @Override
     protected EstablishmentResult doInBackground(String... strings) {
+        List<Establishment> establishmentsFromApi;
         FsaDataController fsaAPI = new FsaDataController(
                 applicationContext.get()
         );
         try {
-            if (strings.length == 3) // ViewAllEstablishments
-                return fsaAPI.getEstablishments(
+            EstablishmentResult apiResponse = null;
+            if (strings.length == 3) { // ViewAllEstablishments
+                apiResponse = fsaAPI.getEstablishments(
                         Integer.valueOf(strings[0]), // pageNumber
                         Integer.valueOf(strings[1]), // pageSize
                         strings[2] // sortOptionKey
                 );
-            else if (strings.length == 8)
-                return fsaAPI.getEstablishments(
+            } else if (strings.length == 8)
+                apiResponse = fsaAPI.getEstablishments(
                         strings[0], // searchValue
                         Integer.valueOf(strings[1]), // businessType
                         Integer.valueOf(strings[2]), // region
@@ -54,7 +63,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[7]) // ratingKey
                 );
             else if (strings.length == 10)
-                return fsaAPI.getEstablishments(
+                apiResponse = fsaAPI.getEstablishments(
                         strings[0], // Longitude
                         strings[1], // Latitude
                         Integer.valueOf(strings[2]), // businessType
@@ -66,6 +75,25 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         strings[8], // sortOptionKey
                         Integer.valueOf(strings[9]) // ratingKey
                 );
+
+            if (apiResponse != null) {
+                establishmentsFromApi = apiResponse.getEstablishments();
+                for (Establishment e : establishmentsFromApi) {
+                    if (Room.databaseBuilder(
+                            applicationContext.get(),
+                            FsaDatabase.class,
+                            "database"
+                    )
+                            .build()
+                            .establishmentDAO()
+                            .findEstablishmentById(Integer.parseInt(e.getFhrsId())) != null)
+                        isFavourites.add(Boolean.TRUE);
+                    else
+                        isFavourites.add(Boolean.FALSE);
+                }
+            }
+
+            return apiResponse;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,7 +115,10 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     @Override
     protected void onPostExecute(EstablishmentResult establishments) {
         super.onPostExecute(establishments);
-        EstablishmentAdapter establishmentAdapter = new EstablishmentAdapter(establishments.getEstablishments());
+        EstablishmentAdapter establishmentAdapter = new EstablishmentAdapter(
+                establishments.getEstablishments(),
+                isFavourites
+        );
         this.rView.get().setAdapter(establishmentAdapter);
 
         String pageNumber = String.valueOf(establishments.getMeta().getPageNumber());

@@ -8,7 +8,9 @@ import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.EstablishmentsAsyncTask;
 import com.bham.restaurantapp.background.async.PostcodeAsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,8 @@ import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
 import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
 import static com.bham.restaurantapp.Globals.DEFAULT_MAX_DISTANCE_LIMIT;
 import static com.bham.restaurantapp.Globals.DEFAULT_MIN_RATING;
+import static com.bham.restaurantapp.Globals.DEFAULT_PAGE_NUMBER;
+import static com.bham.restaurantapp.Globals.DEFAULT_PAGE_SIZE;
 import static com.bham.restaurantapp.Globals.DEFAULT_REGION_ID;
 
 public class EstablishmentListViewActivity extends AppCompatActivity {
@@ -37,7 +41,21 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_establishments_list);
+        if (savedInstanceState != null) {
+            this.pageNumber = savedInstanceState.getInt("pageNumber");
+            this.pageSize = savedInstanceState.getInt("pageSize");
+        } else {
+            this.pageNumber = DEFAULT_PAGE_NUMBER;
+            this.pageSize = DEFAULT_PAGE_SIZE;
+        }
 
+        TextView establishmentsTitleTextView = findViewById(R.id.establishmentsTitleTextView);
+        establishmentsTitleTextView.setText(
+                getString(R.string.search_results_establishments_title)
+        );
+        establishmentsTitleTextView.setBackgroundColor(
+                ContextCompat.getColor(this, android.R.color.holo_red_light)
+        );
         pageNumberTextView = findViewById(R.id.pageNumberTextView);
         rView = findViewById(R.id.testRecyclerView);
         rView.setHasFixedSize(true);
@@ -151,5 +169,18 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(ratingKey)
                     );
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("pageNumber", pageNumber);
+        outState.putInt("pageSize", pageSize);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPageResults();
     }
 }

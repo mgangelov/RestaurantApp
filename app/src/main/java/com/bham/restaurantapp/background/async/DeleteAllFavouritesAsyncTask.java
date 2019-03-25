@@ -1,6 +1,5 @@
 package com.bham.restaurantapp.background.async;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,6 +8,7 @@ import com.bham.restaurantapp.model.db.FsaDatabase;
 
 import java.lang.ref.WeakReference;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.room.Room;
 
 public class DeleteAllFavouritesAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -23,6 +23,7 @@ public class DeleteAllFavouritesAsyncTask extends AsyncTask<Void, Void, Void> {
         this.applicationContext = new WeakReference<>(applicationContext);
         this.successAlert = successAlert;
     }
+
 
     @Override
     protected Void doInBackground(Void... voids) {

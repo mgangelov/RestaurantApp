@@ -3,6 +3,7 @@ package com.bham.restaurantapp.model.fsa;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bham.restaurantapp.model.db.entities.EstablishmentEntity;
 import com.google.gson.annotations.SerializedName;
 
 public class Establishment implements Parcelable {
@@ -38,6 +39,33 @@ public class Establishment implements Parcelable {
     private String localAuthorityName;
     private ResponseMetadata meta;
 
+    public Establishment(String fhrsId,
+                         String businessName,
+                         String businessTypeID,
+                         String businessType,
+                         String addressLine1,
+                         String addressLine2,
+                         String addressLine3,
+                         String addressLine4,
+                         String postCode,
+                         String ratingValue,
+                         String ratingDate,
+                         String localAuthorityName
+    ) {
+        this.fhrsId = fhrsId;
+        this.businessName = businessName;
+        this.businessTypeID = businessTypeID;
+        this.businessType = businessType;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.addressLine3 = addressLine3;
+        this.addressLine4 = addressLine4;
+        this.postCode = postCode;
+        this.ratingValue = ratingValue;
+        this.ratingDate = ratingDate;
+        this.localAuthorityName = localAuthorityName;
+    }
+
     protected Establishment(Parcel in) {
         fhrsId = in.readString();
         businessName = in.readString();
@@ -51,6 +79,8 @@ public class Establishment implements Parcelable {
         ratingDate = in.readString();
         distance = in.readString();
     }
+
+
 
     public static final Creator<Establishment> CREATOR = new Creator<Establishment>() {
         @Override
@@ -214,5 +244,22 @@ public class Establishment implements Parcelable {
 
     public void setLocalAuthorityName(String localAuthorityName) {
         this.localAuthorityName = localAuthorityName;
+    }
+
+    public static Establishment fromEstablishmentEntity(EstablishmentEntity e) {
+        return new Establishment(
+                String.valueOf(e._id),
+                e.businessName,
+                String.valueOf(e.businessTypeId),
+                e.businessType,
+                e.addressLine1,
+                e.addressLine2,
+                e.addressLine3,
+                e.addressLine4,
+                e.postCode,
+                String.valueOf(e.ratingValue),
+                e.ratingDate,
+                e.localAuthorityName
+        );
     }
 }
