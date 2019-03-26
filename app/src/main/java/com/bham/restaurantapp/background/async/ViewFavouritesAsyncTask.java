@@ -1,8 +1,8 @@
 package com.bham.restaurantapp.background.async;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.adapter.EstablishmentAdapter;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.fsa.Establishment;
@@ -12,21 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 public class ViewFavouritesAsyncTask extends AsyncTask<Void, Void, List<Establishment>> {
-    private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private FsaDatabase db;
 
-    public ViewFavouritesAsyncTask(Context applicationContext, RecyclerView rView) {
-        this.applicationContext = new WeakReference<>(applicationContext);
+    public ViewFavouritesAsyncTask(RecyclerView rView) {
         this.rView = new WeakReference<>(rView);
-        this.db = Room.databaseBuilder(
-                applicationContext,
-                FsaDatabase.class,
-                "database")
-                .build();
+        this.db = App.getInstance().getDb();
     }
 
     @Override

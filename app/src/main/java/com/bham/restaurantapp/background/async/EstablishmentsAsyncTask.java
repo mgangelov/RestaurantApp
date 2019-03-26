@@ -1,37 +1,34 @@
 package com.bham.restaurantapp.background.async;
 
-import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.adapter.EstablishmentAdapter;
 import com.bham.restaurantapp.background.controller.FsaDataController;
-import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.fsa.Establishment;
 import com.bham.restaurantapp.model.fsa.EstablishmentResult;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 
 public class EstablishmentsAsyncTask extends AsyncTask<String, Void, EstablishmentResult> {
     private static final String TAG = "EstablishmentsAsyncTask";
-    private WeakReference<Context> applicationContext;
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
     private List<Boolean> isFavourites;
 
     public EstablishmentsAsyncTask(
-            Context applicationContext,
             RecyclerView rView,
             TextView pageNumberTextView
     ) {
-        this.applicationContext = new WeakReference<>(applicationContext);
         this.rView = new WeakReference<>(rView);
         this.pageNumberTextView = new WeakReference<>(pageNumberTextView);
         this.isFavourites = new ArrayList<>();
@@ -40,9 +37,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     @Override
     protected EstablishmentResult doInBackground(String... strings) {
         List<Establishment> establishmentsFromApi;
-        FsaDataController fsaAPI = new FsaDataController(
-                applicationContext.get()
-        );
+        FsaDataController fsaAPI = new FsaDataController();
         try {
             EstablishmentResult apiResponse = null;
             if (strings.length == 3) { // ViewAllEstablishments
@@ -51,7 +46,8 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[1]), // pageSize
                         strings[2] // sortOptionKey
                 );
-            } else if (strings.length == 8)
+            } else if (strings.length == 8) {
+                Log.i(TAG, "doInBackground: length 8 string values: " + Arrays.toString(strings));
                 apiResponse = fsaAPI.getEstablishments(
                         strings[0], // searchValue
                         Integer.valueOf(strings[1]), // businessType
@@ -62,6 +58,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         strings[6], // sortOptionKey
                         Integer.valueOf(strings[7]) // ratingKey
                 );
+            }
             else if (strings.length == 10)
                 apiResponse = fsaAPI.getEstablishments(
                         strings[0], // Longitude
@@ -79,14 +76,11 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
             if (apiResponse != null) {
                 establishmentsFromApi = apiResponse.getEstablishments();
                 for (Establishment e : establishmentsFromApi) {
-                    if (Room.databaseBuilder(
-                            applicationContext.get(),
-                            FsaDatabase.class,
-                            "database"
-                    )
-                            .build()
+                    if (App.getInstance().getDb()
                             .establishmentDAO()
-                            .findEstablishmentById(Integer.parseInt(e.getFhrsId())) != null)
+                            .findEstablishmentById(
+                                    Integer.parseInt(e.getFhrsId())) != null
+                    )
                         isFavourites.add(Boolean.TRUE);
                     else
                         isFavourites.add(Boolean.FALSE);

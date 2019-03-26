@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.Globals;
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.model.db.FsaDatabase;
@@ -12,8 +13,6 @@ import com.bham.restaurantapp.model.db.entities.EstablishmentEntity;
 import com.google.android.material.button.MaterialButton;
 
 import java.lang.ref.WeakReference;
-
-import androidx.room.Room;
 
 public class AddFavouriteEstablishmentAsyncTask extends AsyncTask<EstablishmentEntity, Void, Void> {
     private static final String TAG = "AddFavouriteEstablishmentAsyncTask";
@@ -30,11 +29,7 @@ public class AddFavouriteEstablishmentAsyncTask extends AsyncTask<EstablishmentE
             Globals.MODES mode,
             AlertDialog.Builder successAlert) {
         this.applicationContext = new WeakReference<>(applicationContext);
-        this.db = Room.databaseBuilder(
-                applicationContext,
-                FsaDatabase.class,
-                "database")
-                .build();
+        this.db = App.getInstance().getDb();
         this.addToFavouritesMaterialButton = new WeakReference<>(addToFavouritesMaterialButton);
         this.mode = mode;
         this.successAlert = successAlert;
@@ -45,11 +40,7 @@ public class AddFavouriteEstablishmentAsyncTask extends AsyncTask<EstablishmentE
             MaterialButton addToFavouritesMaterialButton,
             Globals.MODES mode) {
         this.applicationContext = new WeakReference<>(applicationContext);
-        this.db = Room.databaseBuilder(
-                applicationContext,
-                FsaDatabase.class,
-                "database")
-                .build();
+        this.db = App.getInstance().getDb();
         this.addToFavouritesMaterialButton = new WeakReference<>(addToFavouritesMaterialButton);
         this.mode = mode;
     }

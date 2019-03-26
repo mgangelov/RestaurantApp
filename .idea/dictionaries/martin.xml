@@ -1,11 +1,16 @@
 <component name="ProjectDictionaryState">
   <dictionary name="martin">
     <words>
+      <w>bham</w>
       <w>btype</w>
       <w>btypeid</w>
       <w>businesstypeid</w>
       <w>businesstypes</w>
+      <w>ciphertext</w>
       <w>countryid</w>
+      <w>decryptor</w>
+      <w>ecryptor</w>
+      <w>encryptor</w>
       <w>fhrs</w>
       <w>fhrsid</w>
       <w>localauthorityid</w>
@@ -17,7 +22,9 @@
       <w>pagenumber</w>
       <w>pagesize</w>
       <w>ratingkey</w>
+      <w>restaurantapp</w>
       <w>schemetypeid</w>
+      <w>schemetypekey</w>
       <w>sortoptionkey</w>
       <w>sortoptions</w>
       <w>supermarketretailers</w>

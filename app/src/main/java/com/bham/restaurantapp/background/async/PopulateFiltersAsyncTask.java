@@ -10,13 +10,12 @@ import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.room.Room;
 
 import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 
@@ -44,14 +43,10 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
         this.businessTypesSpinner = new WeakReference<>(businessTypesSpinner);
         this.regionSpinner = new WeakReference<>(regionSpinner);
         this.authoritySpinner = new WeakReference<>(authoritySpinner);
-        this.db = Room.databaseBuilder(
-                applicationContext,
-                FsaDatabase.class,
-                "database")
-                .build();
         this.existingBusinessTypePosition = existingBusinessTypePosition;
         this.existingRegionPosition = existingRegionPosition;
         this.existingAuthorityPosition = existingAuthorityPosition;
+        this.db = App.getInstance().getDb();
     }
 
     @Override
@@ -79,7 +74,6 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
         authoritySpinner.get().setAdapter(authoritiesAdapter);
 
 
-
         businessTypesSpinner.get().setAdapter(new SimpleCursorAdapter(
                 applicationContext.get(),
                 android.R.layout.simple_spinner_dropdown_item,
@@ -103,17 +97,22 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
                 Cursor selectedRegion = (Cursor) parent.getAdapter().getItem(position);
                 int selectedRegionId = selectedRegion.getInt(selectedRegion.getColumnIndex("_id"));
                 Log.i(TAG, String.format("Filtering authorities for region %s", selectedRegionId));
-                if (selectedRegionId == 99)
-                    authoritySpinner.get().setSelection(1);
-                else if (existingAuthorityPosition != 0)
-                    authoritySpinner.get().setSelection(existingAuthorityPosition);
-                else
-                    authoritySpinner.get().setSelection(0);
-                authoritySpinnerAdapter.getFilter().filter(Integer.toString(selectedRegionId));
+                if (selectedRegionId == 99) {
+                    authoritySpinner.get().setEnabled(false);
+                } else {
+                    if (existingAuthorityPosition != 0)
+                        authoritySpinner.get().setSelection(existingAuthorityPosition);
+                    else {
+                        authoritySpinner.get().setSelection(0);
+                    }
+                    authoritySpinnerAdapter.getFilter().filter(Integer.toString(selectedRegionId));
+                    authoritySpinner.get().setEnabled(true);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                authoritySpinner.get().setEnabled(false);
 
             }
         });
@@ -121,14 +120,13 @@ public class PopulateFiltersAsyncTask extends AsyncTask<Void, Void, List<Cursor>
         businessTypesSpinner.get().setSelection(existingBusinessTypePosition);
         regionSpinner.get().setSelection(existingRegionPosition);
         authoritySpinner.get().setSelection(existingAuthorityPosition);
+        authoritySpinner.get().setEnabled(false);
     }
 
     private FilterQueryProvider filterQueryProvider = constraint -> {
         if (Integer.parseInt(constraint.toString()) == 99) {
             return db.authorityDAO().getAllFilteredCursor();
-        }
-
-        else return db.authorityDAO().findAuthorityByRegionIdCursor(
+        } else return db.authorityDAO().findAuthorityByRegionIdCursor(
                 Integer.parseInt(constraint.toString()));
     };
 }

@@ -11,6 +11,10 @@ public abstract class Globals {
     public static final int DEFAULT_AUTHORITY_ID = 8999;
     public static final int DEFAULT_PAGE_NUMBER = 1;
     public static final int DEFAULT_PAGE_SIZE = 9;
+    public static final String DEFAULT_KEY_GENERATION_SCHEME = "PBKDF2WithHmacSHA1";
+    public static final String DEFAULT_CIPHER_TYPE = "AES/GCM/NoPadding";
+    public static final String DEFAULT_KEY_SPEC = "AES";
+    public static final int DEFAULT_KEY_LENGTH = 128;
     public enum MODES {
         ADD_MODE,
         REMOVE_MODE,

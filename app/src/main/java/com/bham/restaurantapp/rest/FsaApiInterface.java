@@ -13,16 +13,17 @@ import retrofit2.http.Query;
 public interface FsaApiInterface {
     @GET("regions")
     Call<RegionResult> getRegions();
-
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
+// 3
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
             @Query("sortoptionkey") String sortOptionKey
     );
 
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
-    Call<EstablishmentResult> getEstablishments(
+    // Specific authority
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
+    Call<EstablishmentResult> getEstablishmentsWithBusinessType(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
@@ -34,8 +35,22 @@ public interface FsaApiInterface {
             @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
+    // specific authority
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
+            @Query("longitude") String longitude,
+            @Query("latitude") String latitude,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("localauthorityid") int localAuthorityId,
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
+    );
+
+    // All regions
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
+    Call<EstablishmentResult> getEstablishmentsWithBusinessType(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
@@ -46,7 +61,8 @@ public interface FsaApiInterface {
             @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
+    // All regions
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
             @Query("longitude") String longitude,
             @Query("latitude") String latitude,
@@ -57,8 +73,45 @@ public interface FsaApiInterface {
             @Query("ratingkey") int ratingKey
     );
 
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
+
+    // specific authority
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
     Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("localauthorityid") int localAuthorityId,
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
+    );
+
+    // All regions
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
+    Call<EstablishmentResult> getEstablishments(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
+    );
+
+    // all regions
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
+    Call<EstablishmentResult> getEstablishmentsWithBusinessType(
+            @Query("address") String address,
+            @Query("pagenumber") int pageNumber,
+            @Query("pagesize") int pageSize,
+            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("businesstypeid") int businessTypeId,
+            @Query("sortoptionkey") String sortOptionKey,
+            @Query("ratingkey") int ratingKey
+    );
+
+    // specific authority
+    @GET("establishments?schemetypekey=FHRS&ratingOperatorKey=GreaterThanOrEqual")
+    Call<EstablishmentResult> getEstablishmentsWithBusinessType(
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
@@ -69,27 +122,6 @@ public interface FsaApiInterface {
             @Query("ratingkey") int ratingKey
     );
 
-
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
-    Call<EstablishmentResult> getEstablishments(
-            @Query("address") String address,
-            @Query("pagenumber") int pageNumber,
-            @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
-            @Query("businesstypeid") int businessTypeId,
-            @Query("sortoptionkey") String sortOptionKey,
-            @Query("ratingkey") int ratingKey
-    );
-
-    @GET("establishments?schemetypeid=1&ratingOperatorKey=GreaterThanOrEqual")
-    Call<EstablishmentResult> getEstablishments(
-            @Query("address") String address,
-            @Query("pagenumber") int pageNumber,
-            @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
-            @Query("sortoptionkey") String sortOptionKey,
-            @Query("ratingkey") int ratingKey
-    );
 
     @GET("businesstypes/basic")
     Call<BusinessTypeResult> getBusinessTypes();

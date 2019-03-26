@@ -88,6 +88,8 @@ public class SearchScreenActivity extends AppCompatActivity {
         sendSearchValueIntent.putExtra("minRating", minRating);
 
         Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
+        Log.i(TAG, "sendEstablishmentSearchEnquiry: sortBy = " +
+                sortByCursor.getInt(sortByCursor.getColumnIndex("sort_option_key")));
         sendSearchValueIntent.putExtra(
                 "sortOption",
                 sortByCursor.getInt(sortByCursor.getColumnIndex("sort_option_key"))
@@ -180,5 +182,10 @@ public class SearchScreenActivity extends AppCompatActivity {
     public void openFavourites(View view) {
         Intent openFavouritesIntent = new Intent(this, FavouritesListViewActivity.class);
         startActivity(openFavouritesIntent);
+    }
+
+    public void openLogin(View view) {
+        Intent i = new Intent(this, LoginScreenActivity.class);
+        startActivity(i);
     }
 }

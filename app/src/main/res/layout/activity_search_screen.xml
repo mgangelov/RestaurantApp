@@ -111,6 +111,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="wrap_content">
 
+        <!--<com.google.android.material.button.MaterialButton-->
+            <!--android:id="@+id/openLogin"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:onClick="openLogin"-->
+            <!--android:text="Open login"-->
+            <!--app:backgroundTint="@color/colorAccent"/>-->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteFavourites"
             android:layout_width="match_parent"

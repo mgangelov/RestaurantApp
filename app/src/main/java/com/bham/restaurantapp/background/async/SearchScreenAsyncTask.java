@@ -6,11 +6,10 @@ import android.os.AsyncTask;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 
 import java.lang.ref.WeakReference;
-
-import androidx.room.Room;
 
 import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 
@@ -34,11 +33,7 @@ public class SearchScreenAsyncTask extends AsyncTask<Void, Void, Cursor> {
 
     @Override
     protected Cursor doInBackground(Void... voids) {
-        FsaDatabase db = Room.databaseBuilder(
-                applicationContext.get(),
-                FsaDatabase.class,
-                "database")
-                .build();
+        FsaDatabase db = App.getInstance().getDb();
 
         return db.sortOptionsDAO().getAllCursor();
     }

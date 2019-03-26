@@ -129,6 +129,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
         minRatingProgressTextView.setText(
                 String.valueOf(minRatingSeekBar.getProgress())
         );
+
         new PopulateFiltersAsyncTask(
                 getApplicationContext(),
                 businessTypesSpinner,

@@ -1,9 +1,9 @@
 package com.bham.restaurantapp.background.async;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.background.controller.FsaDataController;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.db.entities.AuthorityEntity;
@@ -16,20 +16,16 @@ import com.bham.restaurantapp.model.fsa.Region;
 import com.bham.restaurantapp.model.fsa.SortOption;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.room.Room;
 
 public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "RefreshDbAsyncTask";
-    private WeakReference<Context> applicationContext;
     private AlertDialog.Builder successAlert;
 
-    public RefreshDbAsyncTask(Context applicationContext, AlertDialog.Builder successAlert) {
-        this.applicationContext = new WeakReference<>(applicationContext);
+    public RefreshDbAsyncTask(AlertDialog.Builder successAlert) {
         this.successAlert = successAlert;
     }
 
@@ -41,14 +37,8 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         try {
             Log.i(TAG, "Deleting all DB entries");
-            FsaDatabase db = Room.databaseBuilder(
-                    applicationContext.get(),
-                    FsaDatabase.class,
-                    "database")
-                    .build();
-            FsaDataController fsaDataController = new FsaDataController(
-                    applicationContext.get()
-            );
+            FsaDatabase db = App.getInstance().getDb();
+            FsaDataController fsaDataController = new FsaDataController();
             db.authorityDAO().deleteAllAuthorityEntities();
             db.businessTypeDAO().deleteAllBusinessTypeEntities();
             db.regionDAO().deleteRegionEntities();
@@ -105,27 +95,6 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
                     );
                     Log.i(TAG, String.format("Inserted %s", a.getName()));
                 }
-            }
-            Log.i(TAG, "Adding entry for All authorities");
-            db.authorityDAO().insertAuthorityEntity(
-                    new AuthorityEntity(
-                            8999,
-                            "All",
-                            null
-                    )
-            );
-            Log.i(TAG, "Adding default All entry for each region");
-            int initialID = 9000;
-            for (Region r : regions) {
-                Log.i(TAG, String.format("Processing %s", r.getName()));
-                db.authorityDAO().insertAuthorityEntity(
-                        new AuthorityEntity(
-                                initialID,
-                                "All",
-                                r.getId()
-                        )
-                );
-                initialID++;
             }
             Log.i(TAG, "doInBackground: Adding sortOptions to DB");
             List<SortOption> sortOptions = fsaDataController.getSortOptions()

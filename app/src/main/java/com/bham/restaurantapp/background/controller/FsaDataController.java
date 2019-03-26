@@ -1,8 +1,8 @@
 package com.bham.restaurantapp.background.controller;
 
-import android.content.Context;
 import android.util.Log;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.db.entities.AuthorityEntity;
 import com.bham.restaurantapp.model.fsa.AuthorityResult;
@@ -15,7 +15,6 @@ import com.bham.restaurantapp.rest.FsaApiInterface;
 import java.io.IOException;
 import java.util.List;
 
-import androidx.room.Room;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -31,13 +30,9 @@ public class FsaDataController {
     private Retrofit retrofit;
     private FsaDatabase db;
 
-    public FsaDataController(Context applicationContext) {
+    public FsaDataController() {
         this.retrofit = null;
-        db = Room.databaseBuilder(
-                applicationContext,
-                FsaDatabase.class,
-                "database")
-                .build();
+        this.db = App.getInstance().getDb();
     }
 
 
@@ -74,6 +69,7 @@ public class FsaDataController {
 
         if (businessType == DEFAULT_BUSINESS_TYPE_ID) { // All business types
             if (region == 99) { // All regions, everywhere essentially
+                Log.i(TAG, "getEstablishments: all regions");
                 return connectToFsaApi()
                         .getEstablishments(
                                 searchValue,
@@ -85,6 +81,8 @@ public class FsaDataController {
                         ).execute().body();
             } else {
                 if (authority < 8999) { // Specific authority selected
+                    Log.i(TAG, "getEstablishments: specific authority selected");
+                    Log.i(TAG, "getEstablishments: " + authority + " " + ratingKey + " ");
                     return connectToFsaApi()
                             .getEstablishments(
                                     searchValue,
@@ -96,6 +94,7 @@ public class FsaDataController {
                                     ratingKey
                             ).execute().body();
                 } else { // All authorities from region required
+                    Log.i(TAG, "getEstablishments: no need to be implemented");
                     // TODO
                     List<AuthorityEntity> authorities = db
                             .authorityDAO()
@@ -106,7 +105,7 @@ public class FsaDataController {
         } else { // Specific business type selected
             if (region == 99) { // All regions, everywhere
                 return connectToFsaApi()
-                        .getEstablishments(
+                        .getEstablishmentsWithBusinessType(
                                 searchValue,
                                 pageNumber,
                                 pageSize,
@@ -118,7 +117,7 @@ public class FsaDataController {
             } else {
                 if (authority < 8999) { // Specific authority selected
                     return connectToFsaApi()
-                            .getEstablishments(
+                            .getEstablishmentsWithBusinessType(
                                     searchValue,
                                     pageNumber,
                                     pageSize,
@@ -193,7 +192,7 @@ public class FsaDataController {
         } else {
             if (region == DEFAULT_REGION_ID) {
                 return connectToFsaApi()
-                        .getEstablishments(
+                        .getEstablishmentsWithBusinessType(
                                 longitude,
                                 latitude,
                                 pageNumber,
@@ -206,7 +205,7 @@ public class FsaDataController {
             } else {
                 if (authority < DEFAULT_AUTHORITY_ID) {
                     return connectToFsaApi()
-                            .getEstablishments(
+                            .getEstablishmentsWithBusinessType(
                                     longitude,
                                     latitude,
                                     pageNumber,
