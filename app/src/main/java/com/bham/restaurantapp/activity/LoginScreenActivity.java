@@ -35,7 +35,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                 0
         );
         CharSequence plaintext = textEditText.getText().toString();
-        new EncryptMessageAsyncTask(getApplicationContext())
+        new EncryptMessageAsyncTask()
                 .execute(
                         new String(passwordInput),
                         plaintext

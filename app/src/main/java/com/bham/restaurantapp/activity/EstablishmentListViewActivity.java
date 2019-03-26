@@ -73,7 +73,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
         ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
         if (maxDistanceLimit == 3)
             new EstablishmentsAsyncTask(
-                    getApplicationContext(),
                     rView,
                     pageNumberTextView
             )
@@ -84,7 +83,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey,
+                            String.valueOf(sortOptionKey),
                             String.valueOf(ratingKey)
                     );
         else {
@@ -95,7 +94,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                         longitude = convertedPostcode.longitude;
                         latitude = convertedPostcode.latitude;
                         new EstablishmentsAsyncTask(
-                                getApplicationContext(),
                                 rView,
                                 pageNumberTextView
                         )
@@ -108,7 +106,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                                         String.valueOf(maxDistanceLimit),
                                         String.valueOf(pageNumber),
                                         String.valueOf(pageSize),
-                                        sortOptionKey,
+                                        String.valueOf(sortOptionKey),
                                         String.valueOf(ratingKey)
                                 );
                     }
@@ -137,7 +135,6 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     private void getPageResults() {
         if (maxDistanceLimit == 3) {
             new EstablishmentsAsyncTask(
-                    getApplicationContext(),
                     rView,
                     pageNumberTextView)
                     .execute(
@@ -147,12 +144,11 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(authority),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey,
+                            String.valueOf(sortOptionKey),
                             String.valueOf(ratingKey)
                     );
         } else {
             new EstablishmentsAsyncTask(
-                    getApplicationContext(),
                     rView,
                     pageNumberTextView
             )
@@ -165,7 +161,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(maxDistanceLimit),
                             String.valueOf(pageNumber),
                             String.valueOf(pageSize),
-                            sortOptionKey,
+                            String.valueOf(sortOptionKey),
                             String.valueOf(ratingKey)
                     );
         }

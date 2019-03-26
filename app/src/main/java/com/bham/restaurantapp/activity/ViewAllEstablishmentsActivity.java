@@ -50,7 +50,6 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rView.setLayoutManager(lm);
         new EstablishmentsAsyncTask(
-                getApplicationContext(),
                 this.rView,
                 this.pageNumberTextView
         ).execute(
@@ -76,7 +75,6 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
 
     public void getPageResults() {
         new EstablishmentsAsyncTask(
-                getApplicationContext(),
                 this.rView,
                 this.pageNumberTextView
         )

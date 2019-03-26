@@ -88,11 +88,11 @@ public class SearchScreenActivity extends AppCompatActivity {
         sendSearchValueIntent.putExtra("minRating", minRating);
 
         Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
-        Log.i(TAG, "sendEstablishmentSearchEnquiry: sortBy = " +
-                sortByCursor.getInt(sortByCursor.getColumnIndex("sort_option_key")));
+        String test = sortByCursor.getString(sortByCursor.getColumnIndex("sort_option_key"));
+        Log.i(TAG, "viewAllEstablishmentsEnquiry: Sort option is " + test);
         sendSearchValueIntent.putExtra(
-                "sortOption",
-                sortByCursor.getInt(sortByCursor.getColumnIndex("sort_option_key"))
+                "sortOptionKey",
+                sortByCursor.getString(sortByCursor.getColumnIndex("sort_option_key"))
         );
 
         startActivity(sendSearchValueIntent);
@@ -101,7 +101,6 @@ public class SearchScreenActivity extends AppCompatActivity {
     public void viewAllEstablishmentsEnquiry(View view) {
         Intent viewAllEstablishmentsIntent = new Intent(this, ViewAllEstablishmentsActivity.class);
         Cursor sortByCursor = (Cursor) sortBySpinner.getSelectedItem();
-        Log.i(TAG, "viewAllEstablishmentsEnquiry: spinner position is " + sortBySpinner.getSelectedItem());
         String test = sortByCursor.getString(sortByCursor.getColumnIndex("sort_option_key"));
         Log.i(TAG, "viewAllEstablishmentsEnquiry: Sort option is " + test);
         viewAllEstablishmentsIntent.putExtra(
@@ -123,7 +122,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         confirmationAlertDialog.setMessage("Are you sure you want to refresh database?" +
                 "This will delete all database data.");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
-                new RefreshDbAsyncTask(getApplicationContext(), successAlert)
+                new RefreshDbAsyncTask(successAlert)
                         .execute());
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
         confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);
@@ -170,7 +169,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         confirmationAlertDialog.setTitle("Delete favourites");
         confirmationAlertDialog.setMessage("Are you sure you want to delete favourites?");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
-                new DeleteAllFavouritesAsyncTask(getApplicationContext(), successAlert)
+                new DeleteAllFavouritesAsyncTask(successAlert)
                         .execute()
         );
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);

@@ -33,7 +33,6 @@ public class FavouritesListViewActivity extends AppCompatActivity {
         rView.setLayoutManager(lm);
 
         new ViewFavouritesAsyncTask(
-                getApplicationContext(),
                 rView
         ).execute();
     }
@@ -42,7 +41,6 @@ public class FavouritesListViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new ViewFavouritesAsyncTask(
-                getApplicationContext(),
                 rView
         ).execute();
     }
