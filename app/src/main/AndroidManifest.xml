@@ -15,19 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.ManagePasswordActivity"></activity>
+        <activity android:name=".activity.LaunchActivity"
+            android:theme="@style/AppTheme.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ManagePasswordActivity" />
         <activity android:name=".activity.LoginScreenActivity" />
         <activity android:name=".activity.EstablishmentViewActivity" />
         <activity android:name=".activity.SearchFiltersActivity" />
         <activity android:name=".activity.ViewAllEstablishmentsActivity" />
         <activity android:name=".activity.EstablishmentListViewActivity" />
-        <activity android:name=".activity.SearchScreenActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.SearchScreenActivity" />
         <activity android:name=".activity.FavouritesListViewActivity" />
     </application>
 

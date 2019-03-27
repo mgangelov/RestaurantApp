@@ -27,4 +27,7 @@ public interface SortOptionsDAO {
     @Query("delete from sortoptionentity")
     void deleteAllSortOptionsEntities();
 
+    @Query("select count(*) from sortoptionentity")
+    int countRows();
+
 }

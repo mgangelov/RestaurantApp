@@ -2,10 +2,15 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
     <style name="Widget.Shrine.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -14,12 +19,24 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="EstablishmentRating" parent="@android:style/Widget.RatingBar">
-        <!--<item name="android:minHeight">32dip</item>-->
-        <!--<item name="android:minWidth">36dip</item>-->
-        <!--<item name="android:minHeight">12sp</item>-->
-        <!--<item name="android:minWidth">16sp</item>-->
-        <item name="android:progressDrawable">@drawable/rating_bar_icon</item>
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
+
+    <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <!--<style name="EstablishmentRating" parent="@android:style/Widget.RatingBar">-->
+    <!--&lt;!&ndash;<item name="android:minHeight">32dip</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:minWidth">36dip</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:minHeight">12sp</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item name="android:minWidth">16sp</item>&ndash;&gt;-->
+    <!--<item name="android:progressDrawable">@drawable/rating_bar_icon</item>-->
+    <!--</style>-->
 
 </resources>

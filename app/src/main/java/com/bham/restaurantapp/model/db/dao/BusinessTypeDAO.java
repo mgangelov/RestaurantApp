@@ -24,6 +24,9 @@ public interface BusinessTypeDAO {
     @Insert
     void insertBusinessTypeEntity(BusinessTypeEntity bte);
 
+    @Query("select count(*) from businesstypeentity")
+    int countRows();
+
     @Query("delete from businesstypeentity")
     void deleteAllBusinessTypeEntities();
 }

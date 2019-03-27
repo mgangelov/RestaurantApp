@@ -19,4 +19,6 @@
     <color name="btypeid7844">#e5db9c</color>
     <color name="btypeid9999">#ffff</color>
     <color name="pinkFavourite">#fe7f9c</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

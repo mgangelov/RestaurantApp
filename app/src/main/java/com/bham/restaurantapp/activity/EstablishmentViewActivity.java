@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bham.restaurantapp.Globals;
 import com.bham.restaurantapp.R;
@@ -148,6 +149,8 @@ public class EstablishmentViewActivity extends AppCompatActivity {
                     successAlert).execute(
                     establishmentEntity
             );
+            Toast.makeText(getApplicationContext(), "Added to favourites", Toast.LENGTH_LONG)
+                    .show();
         }
         if (addToFavouritesMaterialButton.getText().equals(getString(R.string.remove_favourite_establishment))) {
             Log.i(TAG, "addEstablishmentToFavourites: Removing from favourites");
@@ -158,6 +161,8 @@ public class EstablishmentViewActivity extends AppCompatActivity {
                     successAlert).execute(
                     establishmentEntity
             );
+            Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }

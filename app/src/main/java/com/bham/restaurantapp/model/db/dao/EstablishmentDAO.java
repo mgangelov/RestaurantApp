@@ -31,4 +31,8 @@ public interface EstablishmentDAO {
 
     @Delete
     void deleteEstablishmentEntity(EstablishmentEntity e);
+
+
+    @Query("select count(*) from establishmententity")
+    int countRows();
 }

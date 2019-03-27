@@ -60,6 +60,7 @@ public class SearchScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
         pauseTime = System.currentTimeMillis();
@@ -214,7 +215,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         confirmationAlertDialog.setMessage("Are you sure you want to refresh database?" +
                 "This will delete all database data.");
         confirmationAlertDialog.setPositiveButton(android.R.string.yes, (dialog, which) ->
-                new RefreshDbAsyncTask(successAlert)
+                new RefreshDbAsyncTask(getApplicationContext())
                         .execute());
         confirmationAlertDialog.setNegativeButton(android.R.string.no, null);
         confirmationAlertDialog.setIcon(android.R.drawable.ic_dialog_alert);

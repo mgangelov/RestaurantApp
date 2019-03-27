@@ -49,4 +49,8 @@
     <string name="enter_password_text">Enter password</string>
     <string name="password_login_button_text">Login</string>
     <string name="remove_password_text">Remove password</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

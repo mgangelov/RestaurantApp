@@ -26,4 +26,7 @@ public interface RegionDAO {
 
     @Query("delete from regionentity")
     void deleteRegionEntities();
+
+    @Query("select count(*) from regionentity")
+    int countRows();
 }

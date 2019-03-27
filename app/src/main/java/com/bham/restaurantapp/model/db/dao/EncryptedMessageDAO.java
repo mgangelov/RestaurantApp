@@ -21,4 +21,7 @@ public interface EncryptedMessageDAO {
 
     @Query("delete from encryptedmessageentity")
     void deleteAllEncryptedMessageEntities();
+
+    @Query("select count(*) from encryptedmessageentity")
+    int countRows();
 }

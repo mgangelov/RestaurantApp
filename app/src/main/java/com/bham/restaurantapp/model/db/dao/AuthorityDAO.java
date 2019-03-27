@@ -37,6 +37,9 @@ public interface AuthorityDAO {
             "order by authority_name asc")
     List<AuthorityEntity> findAuthorityByRegionId(int regionId);
 
+    @Query("select count(*) from authorityentity")
+    int countRows();
+
     @Insert
     void insertAuthorityEntity(AuthorityEntity ae);
 
