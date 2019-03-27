@@ -6,42 +6,40 @@ import android.util.Log;
 import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.db.entities.EncryptedMessageEntity;
-import com.bham.restaurantapp.security.AESEncryptor;
+import com.bham.restaurantapp.security.AESEncryptor3;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 
-public class EncryptMessageAsyncTask extends AsyncTask<CharSequence, Void, Long> {
+public class EncryptMessageAsyncTask extends AsyncTask<String, Void, Long> {
     private static final String TAG = "EncryptMessageAsyncTask";
     private FsaDatabase db;
+    private String masterKey;
+
     public EncryptMessageAsyncTask() {
         this.db = App.getInstance().getDb();
     }
 
     @Override
-    protected Long doInBackground(CharSequence... charSequences) {
-        AESEncryptor aes =
-                new AESEncryptor(charSequences[0].toString().toCharArray());
-
-        byte[] ciphertext = aes.
-                encryptPlaintext(charSequences[1].toString().getBytes());
-
-        Log.i(TAG, "submitPassword: Ciphertext is " +
-                Arrays.toString(ciphertext)
-        );
+    protected Long doInBackground(String ... charSequences) {
+        AESEncryptor3 aes = new AESEncryptor3(charSequences[0]);
+        masterKey = charSequences[0];
+        byte[] encryptedText =
+                aes.encrypt(charSequences[1].getBytes(StandardCharsets.UTF_8));
         return db.encryptedMessageDAO().insertEncryptedMessageEntity(
                 new EncryptedMessageEntity(
                         aes.getSalt(),
-                        ciphertext,
-                        aes.getIvSpec().getIV()
+                        encryptedText,
+                        aes.getIv()
                 )
         );
+
     }
 
     @Override
     protected void onPostExecute(Long aLong) {
         super.onPostExecute(aLong);
         Log.i(TAG, "onPostExecute: The encrypted message id is: " + aLong);
-        new DecryptMessageAsyncTask()
+        new DecryptMessageAsyncTask(masterKey)
                 .execute(aLong);
     }
 }

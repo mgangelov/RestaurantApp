@@ -14,7 +14,7 @@ public interface EncryptedMessageDAO {
     List<EncryptedMessageEntity> getAll();
 
     @Query("select * from encryptedmessageentity where _id like :emId")
-    EncryptedMessageEntity findEncryptedMessageById(int emId);
+    EncryptedMessageEntity findEncryptedMessageById(Long emId);
 
     @Insert
     long insertEncryptedMessageEntity(EncryptedMessageEntity emt);

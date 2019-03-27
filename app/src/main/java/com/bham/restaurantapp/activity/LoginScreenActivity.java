@@ -38,7 +38,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         new EncryptMessageAsyncTask()
                 .execute(
                         new String(passwordInput),
-                        plaintext
+                        textEditText.getText().toString()
                 );
 
 
