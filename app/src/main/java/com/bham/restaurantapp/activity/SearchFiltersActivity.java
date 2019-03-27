@@ -25,7 +25,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
     private Spinner businessTypesSpinner;
     private Spinner regionSpinner;
     private Spinner authoritiesSpinner;
-    private float maxDistanceLimit;
+    private int maxDistanceLimit;
     private int minRating;
     TextView maxDistanceLimitProgressTextView;
     TextView minRatingProgressTextView;
@@ -46,13 +46,13 @@ public class SearchFiltersActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: Initialising the seek bars");
         maxDistanceSeekBar = findViewById(R.id.maxDistanceLimitSeekBar);
         maxDistanceLimit = getIntent()
-                .getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
-        maxDistanceSeekBar.setProgress((int) (maxDistanceLimit * 10));
+                .getIntExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        maxDistanceSeekBar.setProgress(maxDistanceLimit);
         maxDistanceSeekBar.setOnSeekBarChangeListener(maxDistanceLimitChangeListener);
         maxDistanceLimitProgressTextView =
                 findViewById(R.id.maxDistanceLimitProgressTextView);
         maxDistanceLimitProgressTextView.setText(String.valueOf(
-                convertIntToFloat(maxDistanceSeekBar.getProgress())
+                maxDistanceSeekBar.getProgress()
         ));
         minRating = getIntent()
                 .getIntExtra("minRating", DEFAULT_MIN_RATING);
@@ -80,9 +80,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
             new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    maxDistanceLimitProgressTextView.setText(
-                            String.valueOf(convertIntToFloat(progress))
-                    );
+                    maxDistanceLimitProgressTextView.setText(String.valueOf(progress));
                 }
 
                 @Override
@@ -92,7 +90,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    maxDistanceLimit = convertIntToFloat(seekBar.getProgress());
+                    maxDistanceLimit = seekBar.getProgress();
 
                 }
             };
@@ -115,16 +113,15 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 }
             };
 
-    public float convertIntToFloat(int progress) {
-        return .1f * progress;
-    }
 
     public void clearFilterChanges(View view) {
         Log.i(TAG, "Clearing all filter changes");
-        maxDistanceSeekBar.setProgress((int) (DEFAULT_MAX_DISTANCE_LIMIT * 10));
+        maxDistanceLimit = DEFAULT_MAX_DISTANCE_LIMIT;
+        maxDistanceSeekBar.setProgress(DEFAULT_MAX_DISTANCE_LIMIT);
         maxDistanceLimitProgressTextView.setText(String.valueOf(
-                convertIntToFloat(maxDistanceSeekBar.getProgress())
+                maxDistanceSeekBar.getProgress()
         ));
+        minRating = DEFAULT_MIN_RATING;
         minRatingSeekBar.setProgress(DEFAULT_MIN_RATING);
         minRatingProgressTextView.setText(
                 String.valueOf(minRatingSeekBar.getProgress())
@@ -199,6 +196,7 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 "authorityPosition",
                 authoritiesSpinner.getSelectedItemPosition()
         );
+        Log.i(TAG, "submitFilters: max distance limit is " + maxDistanceLimit);
         searchScreenIntent.putExtra(
                 "maxDistanceLimit",
                 maxDistanceLimit

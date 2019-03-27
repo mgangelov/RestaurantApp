@@ -61,7 +61,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         Establishment currentEstablishment = establishmentsList.get(position);
         holder.establishmentNameTextView.setText(currentEstablishment.getBusinessName());
         try {
-            holder.establishmentRatingBar.setRating(Float.parseFloat(currentEstablishment.getRatingValue()));
+            holder.establishmentRatingBar.setRating(Integer.parseInt(currentEstablishment.getRatingValue()));
         } catch (NumberFormatException n) {
             holder.establishmentRatingBar.setRating(0);
         }

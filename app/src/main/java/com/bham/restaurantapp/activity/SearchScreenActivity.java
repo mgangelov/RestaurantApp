@@ -14,12 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.DeleteAllFavouritesAsyncTask;
 import com.bham.restaurantapp.background.async.RefreshDbAsyncTask;
-import com.bham.restaurantapp.background.async.SearchScreenAsyncTask;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
@@ -30,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
 import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_POSITION;
 import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
@@ -52,7 +54,7 @@ public class SearchScreenActivity extends AppCompatActivity {
     private int businessType;
     private int region;
     private int authority;
-    private float maxDistanceLimit;
+    private int maxDistanceLimit;
     private int minRating;
 
     @Override
@@ -60,9 +62,20 @@ public class SearchScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
-
+        sortBySpinner = findViewById(R.id.sortBySpinner);
+        sortBySpinner.setAdapter(new SimpleCursorAdapter(
+                getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                App.getInstance().getDb().sortOptionsDAO().getAllCursor(),
+                new String[]{"sort_option_name"},
+                new int[]{android.R.id.text1},
+                FLAG_REGISTER_CONTENT_OBSERVER
+        ));
         if (savedInstanceState != null) {
             Log.i(TAG, "onCreate: saved instance stae is not null!");
+            int sortPosition = savedInstanceState.getInt("sortPosition");
+            Log.i(TAG, "onCreate: sortPosition: " + sortPosition);
+            sortBySpinner.setSelection(sortPosition);
             if (savedInstanceState.getString("searchValue") != null) {
                 Log.i(TAG, "onCreate: restoring search value");
                 establishmentSearchEditText.setText(savedInstanceState.getString("searchValue"));
@@ -99,7 +112,7 @@ public class SearchScreenActivity extends AppCompatActivity {
                 double latitude = location.getLatitude();
                 Log.i(TAG, "onLocationChanged: logiiii " + longitude);
                 Log.i(TAG, "onLocationChanged: latiiii " + latitude);
-                establishmentSearchEditText.setText(String.format(Locale.ENGLISH, "%.2f %.2f", longitude, latitude));
+                establishmentSearchEditText.setText(String.format(Locale.ENGLISH, "%f %f", longitude, latitude));
                 useLocation = true;
             }
 
@@ -118,21 +131,14 @@ public class SearchScreenActivity extends AppCompatActivity {
 
             }
         };
-
-        sortBySpinner = findViewById(R.id.sortBySpinner);
-        new SearchScreenAsyncTask(
-                getApplicationContext(),
-                sortBySpinner,
-                getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT)
-        )
-                .execute();
-
         Log.i(TAG, "Recreating activity");
         businessType = getIntent().getIntExtra("businessType", DEFAULT_BUSINESS_TYPE_ID);
         region = getIntent().getIntExtra("region", DEFAULT_REGION_ID);
         authority = getIntent().getIntExtra("authority", DEFAULT_AUTHORITY_ID);
-        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        maxDistanceLimit = getIntent().getIntExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        Log.i(TAG, "onCreate: max distance received is " + maxDistanceLimit);
         minRating = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
+        Log.i(TAG, "onCreate: minRating received is " + minRating);
         if (
                 businessType != DEFAULT_BUSINESS_TYPE_ID ||
                         region != DEFAULT_REGION_ID ||
@@ -231,6 +237,7 @@ public class SearchScreenActivity extends AppCompatActivity {
                 getIntent().getIntExtra("authorityPosition", DEFAULT_AUTHORITY_POSITION)
         );
         openSearchFiltersIntent.putExtra("maxDistanceLimit", maxDistanceLimit);
+        openSearchFiltersIntent.putExtra("minRating", minRating);
         startActivity(openSearchFiltersIntent);
     }
 
@@ -238,6 +245,7 @@ public class SearchScreenActivity extends AppCompatActivity {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "Storing state");
+        outState.putInt("sortPosition", sortBySpinner.getSelectedItemPosition());
         if (useLocation) {
             Log.i(TAG, "onSaveInstanceState: storing coords");
             outState.putString("longitude", establishmentSearchEditText.getText().toString().split(" ")[0]);
@@ -282,6 +290,7 @@ public class SearchScreenActivity extends AppCompatActivity {
                 requestLocPerms();
             } else {
                 requestLocPerms();
+                locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, Looper.getMainLooper());
             }
         } else {
             locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, Looper.getMainLooper());

@@ -28,7 +28,7 @@ public interface FsaApiInterface {
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("localauthorityid") int localAuthorityId,
             @Query("sortoptionkey") String sortOptionKey,
@@ -42,7 +42,7 @@ public interface FsaApiInterface {
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("localauthorityid") int localAuthorityId,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
@@ -55,7 +55,7 @@ public interface FsaApiInterface {
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
@@ -68,7 +68,7 @@ public interface FsaApiInterface {
             @Query("latitude") String latitude,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
     );
@@ -80,7 +80,7 @@ public interface FsaApiInterface {
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("localauthorityid") int localAuthorityId,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
@@ -92,7 +92,7 @@ public interface FsaApiInterface {
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
     );
@@ -103,7 +103,7 @@ public interface FsaApiInterface {
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("sortoptionkey") String sortOptionKey,
             @Query("ratingkey") int ratingKey
@@ -115,7 +115,7 @@ public interface FsaApiInterface {
             @Query("address") String address,
             @Query("pagenumber") int pageNumber,
             @Query("pagesize") int pageSize,
-            @Query("maxdistancelimit") float maxDistanceLimit,
+            @Query("maxdistancelimit") int maxDistanceLimit,
             @Query("businesstypeid") int businessTypeId,
             @Query("localauthorityid") int localAuthorityId,
             @Query("sortoptionkey") String sortOptionKey,

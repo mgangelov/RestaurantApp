@@ -67,7 +67,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[2]), // businessType
                         Integer.valueOf(strings[3]), // region
                         Integer.valueOf(strings[4]), // authority
-                        Float.valueOf(strings[5]), // maxDistanceLimit
+                        Integer.valueOf(strings[5]), // maxDistanceLimit
                         Integer.valueOf(strings[6]), // pageNumber
                         Integer.valueOf(strings[7]), // pageSize
                         strings[8], // sortOptionKey

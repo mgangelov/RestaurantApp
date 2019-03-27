@@ -17,17 +17,13 @@ import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 public class SearchScreenAsyncTask extends AsyncTask<Void, Void, Cursor> {
     private WeakReference<Context> applicationContext;
     private WeakReference<Spinner> sortBySpinner;
-//    private boolean isMaxDistanceLimitSet = false;
 
     public SearchScreenAsyncTask(
             Context applicationContext,
-            Spinner sortBySpinner,
-            float maxDistanceLimit
+            Spinner sortBySpinner
     ) {
         this.applicationContext = new WeakReference<>(applicationContext);
         this.sortBySpinner = new WeakReference<>(sortBySpinner);
-//        if (maxDistanceLimit != 3)
-//            isMaxDistanceLimitSet = true;
     }
 
 

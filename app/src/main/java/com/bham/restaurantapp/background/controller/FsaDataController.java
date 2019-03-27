@@ -145,7 +145,7 @@ public class FsaDataController {
             int businessType,
             int region,
             int authority,
-            float maxDistanceLimit,
+            int maxDistanceLimit,
             int pageNumber,
             int pageSize,
             String sortOptionKey,
@@ -155,9 +155,16 @@ public class FsaDataController {
                 "using business type " + businessType + "\n " +
                 "and region " + region + "\n" +
                 "and authority " + authority + "\n" +
-                "and maxDistanceLimit " + maxDistanceLimit);
+                "and maxDistanceLimit " + maxDistanceLimit + "\n" +
+                "and longitude " + longitude + "\n" +
+                "and latitude " + latitude + "\n" +
+                "and sortOptionKey " + sortOptionKey + "\n" +
+                "and ratingKey " + ratingKey + "\n"
+
+        );
         if (businessType == DEFAULT_BUSINESS_TYPE_ID) {
             if (region == DEFAULT_REGION_ID) {
+                Log.i(TAG, "getEstablishments: default region id");
                 return connectToFsaApi()
                         .getEstablishments(
                                 longitude,
@@ -170,6 +177,7 @@ public class FsaDataController {
                         ).execute().body();
             } else {
                 if (authority < DEFAULT_AUTHORITY_ID) {
+                    Log.i(TAG, "getEstablishments: default authority id");
                    return connectToFsaApi()
                            .getEstablishments(
                                    longitude,
@@ -183,6 +191,7 @@ public class FsaDataController {
                            ).execute().body();
                 } else {
                     // TODO
+                    Log.i(TAG, "getEstablishments: todododododo");
                     List<AuthorityEntity> authorities = db
                             .authorityDAO()
                             .findAuthorityByRegionId(region);

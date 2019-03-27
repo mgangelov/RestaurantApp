@@ -32,7 +32,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
     private int region;
     private int authority;
     private String searchValue;
-    private float maxDistanceLimit;
+    private int maxDistanceLimit;
     private String longitude;
     private String latitude;
     private String sortOptionKey;
@@ -76,7 +76,7 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
             searchValue = getIntent().getStringExtra("searchValue");
             Log.i(TAG, "onCreate: setting serachvalue");
         }
-        maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        maxDistanceLimit = getIntent().getIntExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
         Log.i(TAG, "onCreate: max disti value: " + maxDistanceLimit);
         businessType = getIntent().getIntExtra("businessType", DEFAULT_BUSINESS_TYPE_ID);
         region = getIntent().getIntExtra("region", DEFAULT_REGION_ID);
