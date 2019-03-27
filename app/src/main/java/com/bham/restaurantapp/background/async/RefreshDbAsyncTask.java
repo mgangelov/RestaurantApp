@@ -104,7 +104,7 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
                         new SortOptionEntity(
                                 s.getSortOptionId(),
                                 s.getSortOptionName(),
-                                s.getSortOptionKey()
+                                s.getSortOptionKey().toLowerCase()
                         )
                 );
             }
@@ -117,6 +117,6 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        successAlert.show();
+//        successAlert.show();
     }
 }

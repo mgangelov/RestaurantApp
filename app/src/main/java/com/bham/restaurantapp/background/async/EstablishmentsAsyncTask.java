@@ -59,7 +59,8 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[7]) // ratingKey
                 );
             }
-            else if (strings.length == 10)
+            else if (strings.length == 10) {
+                Log.i(TAG, "doInBackground: 10 values: " + Arrays.toString(strings));
                 apiResponse = fsaAPI.getEstablishments(
                         strings[0], // Longitude
                         strings[1], // Latitude
@@ -73,6 +74,7 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                         Integer.valueOf(strings[9]) // ratingKey
                 );
 
+            }
             if (apiResponse != null) {
                 establishmentsFromApi = apiResponse.getEstablishments();
                 for (Establishment e : establishmentsFromApi) {

@@ -15,6 +15,7 @@ import com.bham.restaurantapp.activity.EstablishmentViewActivity;
 import com.bham.restaurantapp.model.fsa.Establishment;
 
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -66,7 +67,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         }
         String establishmentDistance = currentEstablishment.getDistance();
         if (establishmentDistance != null) {
-            holder.establishmentDistTextView.setText(establishmentDistance);
+            holder.establishmentDistTextView.setText(String.format(Locale.ENGLISH, "%.2f miles away", Float.parseFloat(establishmentDistance)));
         }
 
         GradientDrawable border = new GradientDrawable();

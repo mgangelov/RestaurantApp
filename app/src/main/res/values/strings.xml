@@ -40,4 +40,5 @@
     <string name="search_results_establishments_title">Search results</string>
     <string name="view_favourites_title">Favourite establishments</string>
     <string name="favourite_flag">Favourite</string>
+    <string name="get_location">Get Location</string>
 </resources>

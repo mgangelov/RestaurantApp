@@ -15,22 +15,43 @@
         android:src="@drawable/logo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/searchFieldTextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/search_field_text_hint"
-        app:layout_constraintTop_toBottomOf="@id/FsaLogoImageView">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/searchFieldEditText"
+    <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--android:id="@+id/searchFieldTextInputLayout"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/FsaLogoImageView"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchFieldTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:hint="@string/search_field_text_hint"
+            app:layout_constraintTop_toBottomOf="@id/FsaLogoImageView">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchFieldEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+    <ImageButton
+        app:layout_constraintTop_toTopOf="@id/searchFieldTextInputLayout"
+        app:layout_constraintBottom_toBottomOf="@id/searchFieldTextInputLayout"
+        app:layout_constraintRight_toRightOf="@id/searchFieldTextInputLayout"
+        android:contentDescription="@string/get_location"
+        android:background="@null"
+        android:src="@drawable/ic_my_location_black_24dp"
+        android:onClick="accessCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:id="@+id/sortByLinearLayout"
         android:layout_width="match_parent"
@@ -111,13 +132,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="wrap_content">
 
-        <!--<com.google.android.material.button.MaterialButton-->
-            <!--android:id="@+id/openLogin"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:onClick="openLogin"-->
-            <!--android:text="Open login"-->
-            <!--app:backgroundTint="@color/colorAccent"/>-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/openLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openLogin"
+            android:text="Open login"
+            app:backgroundTint="@color/colorAccent"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteFavourites"

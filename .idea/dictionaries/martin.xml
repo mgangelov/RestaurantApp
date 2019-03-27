@@ -7,12 +7,14 @@
       <w>businesstypeid</w>
       <w>businesstypes</w>
       <w>ciphertext</w>
+      <w>coords</w>
       <w>countryid</w>
       <w>decryptor</w>
       <w>ecryptor</w>
       <w>encryptor</w>
       <w>fhrs</w>
       <w>fhrsid</w>
+      <w>latit</w>
       <w>localauthorityid</w>
       <w>maxdistance</w>
       <w>maxdistancelimit</w>

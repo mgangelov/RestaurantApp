@@ -204,10 +204,16 @@ public class SearchFiltersActivity extends AppCompatActivity {
                 maxDistanceLimit
         );
         Log.i(TAG, String.format("submitFilters: searchValue is %s", getIntent().getStringExtra("searchValue")));
-        searchScreenIntent.putExtra(
-                "searchValue",
-                getIntent().getStringExtra("searchValue")
-        );
+        if (getIntent().getStringExtra("searchValue") != null)
+            searchScreenIntent.putExtra(
+                    "searchValue",
+                    getIntent().getStringExtra("searchValue")
+            );
+        else if (getIntent().getStringExtra("longitude") != null && getIntent().getStringExtra("latitude") != null) {
+            Log.i(TAG, "submitFilters: setting back coords");
+            searchScreenIntent.putExtra("longitude", getIntent().getStringExtra("longitude"));
+            searchScreenIntent.putExtra("latitude", getIntent().getStringExtra("latitude"));
+        }
         Log.i(TAG, "submitFilters: minRating is " + minRating);
         searchScreenIntent.putExtra(
                 "minRating",

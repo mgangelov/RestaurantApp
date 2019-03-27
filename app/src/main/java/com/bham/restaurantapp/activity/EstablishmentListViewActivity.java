@@ -1,12 +1,12 @@
 package com.bham.restaurantapp.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.EstablishmentsAsyncTask;
-import com.bham.restaurantapp.background.async.PostcodeAsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,7 @@ import static com.bham.restaurantapp.Globals.DEFAULT_PAGE_SIZE;
 import static com.bham.restaurantapp.Globals.DEFAULT_REGION_ID;
 
 public class EstablishmentListViewActivity extends AppCompatActivity {
+    private static final String TAG = "EstablishmentListViewActivity";
     private RecyclerView rView;
     private TextView pageNumberTextView;
     private int pageNumber;
@@ -64,14 +65,52 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
         this.pageNumber = 1;
         this.pageSize = 9;
 
-        searchValue = getIntent().getStringExtra("searchValue");
+        Log.i(TAG, "onCreate: reached before check");
+        Log.i(TAG, "onCreate: longitude" + getIntent().getStringExtra("longitude"));
+        Log.i(TAG, "onCreate: latitude" + getIntent().getStringExtra("latitude"));
+        if (getIntent().getStringExtra("longitude") != null && getIntent().getStringExtra("latitude") != null) {
+            Log.i(TAG, "onCreate: loading coords");
+            longitude = getIntent().getStringExtra("longitude");
+            latitude = getIntent().getStringExtra("latitude");
+        } else if (getIntent().getStringExtra("searchValue") != null) {
+            searchValue = getIntent().getStringExtra("searchValue");
+            Log.i(TAG, "onCreate: setting serachvalue");
+        }
         maxDistanceLimit = getIntent().getFloatExtra("maxDistanceLimit", DEFAULT_MAX_DISTANCE_LIMIT);
+        Log.i(TAG, "onCreate: max disti value: " + maxDistanceLimit);
         businessType = getIntent().getIntExtra("businessType", DEFAULT_BUSINESS_TYPE_ID);
         region = getIntent().getIntExtra("region", DEFAULT_REGION_ID);
         authority = getIntent().getIntExtra("authority", DEFAULT_AUTHORITY_ID);
         sortOptionKey = getIntent().getStringExtra("sortOptionKey");
         ratingKey = getIntent().getIntExtra("minRating", DEFAULT_MIN_RATING);
-        if (maxDistanceLimit == 3)
+        Log.i(TAG, "onCreate: reached before second check");
+        getPageResults();
+    }
+
+    public void onGoToPreviousPage(View view) {
+        Log.i(TAG, "onGoToPreviousPage: loaded previous page");
+        this.pageNumber -= 1;
+        if (this.pageNumber != 0) {
+            getPageResults();
+        } else
+            this.pageNumber += 1;
+    }
+
+    public void onGoToNextPage(View view) {
+        Log.i(TAG, "onGoToNextPage: loaded next page");
+        int totalPages = Integer.valueOf(
+                pageNumberTextView.getText().toString().split("/")[1]
+        );
+        if (this.pageNumber + 1 <= totalPages) {
+            this.pageNumber += 1;
+            getPageResults();
+        }
+    }
+
+    private void getPageResults() {
+        Log.i(TAG, "getPageResults: reached getPageREsults");
+        if (searchValue != null) {
+            Log.i(TAG, "onCreate: SearchValue is " + searchValue);
             new EstablishmentsAsyncTask(
                     rView,
                     pageNumberTextView
@@ -86,68 +125,9 @@ public class EstablishmentListViewActivity extends AppCompatActivity {
                             String.valueOf(sortOptionKey),
                             String.valueOf(ratingKey)
                     );
-        else {
-            // Convert postcode into coordinates so that the maxDistanceLimit
-            // option works with the API
-            new PostcodeAsyncTask(
-                    convertedPostcode -> {
-                        longitude = convertedPostcode.longitude;
-                        latitude = convertedPostcode.latitude;
-                        new EstablishmentsAsyncTask(
-                                rView,
-                                pageNumberTextView
-                        )
-                                .execute(
-                                        longitude,
-                                        latitude,
-                                        String.valueOf(businessType),
-                                        String.valueOf(region),
-                                        String.valueOf(authority),
-                                        String.valueOf(maxDistanceLimit),
-                                        String.valueOf(pageNumber),
-                                        String.valueOf(pageSize),
-                                        String.valueOf(sortOptionKey),
-                                        String.valueOf(ratingKey)
-                                );
-                    }
-            ).execute(searchValue);
-        }
-    }
-
-    public void onGoToPreviousPage(View view) {
-        this.pageNumber -= 1;
-        if (this.pageNumber != 0) {
-            getPageResults();
-        } else
-            this.pageNumber += 1;
-    }
-
-    public void onGoToNextPage(View view) {
-        int totalPages = Integer.valueOf(
-                pageNumberTextView.getText().toString().split("/")[1]
-        );
-        if (this.pageNumber + 1 <= totalPages) {
-            this.pageNumber += 1;
-            getPageResults();
-        }
-    }
-
-    private void getPageResults() {
-        if (maxDistanceLimit == 3) {
-            new EstablishmentsAsyncTask(
-                    rView,
-                    pageNumberTextView)
-                    .execute(
-                            searchValue,
-                            String.valueOf(businessType),
-                            String.valueOf(region),
-                            String.valueOf(authority),
-                            String.valueOf(pageNumber),
-                            String.valueOf(pageSize),
-                            String.valueOf(sortOptionKey),
-                            String.valueOf(ratingKey)
-                    );
-        } else {
+        } else if (longitude != null && latitude != null) {
+            Log.i(TAG, "onCreate: Long and lat are " + longitude + " " + latitude);
+            Log.i(TAG, "getPageResults: max disti value here " + maxDistanceLimit);
             new EstablishmentsAsyncTask(
                     rView,
                     pageNumberTextView
