@@ -60,10 +60,16 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Establishment currentEstablishment = establishmentsList.get(position);
         holder.establishmentNameTextView.setText(currentEstablishment.getBusinessName());
-        try {
-            holder.establishmentRatingBar.setRating(Integer.parseInt(currentEstablishment.getRatingValue()));
-        } catch (NumberFormatException n) {
-            holder.establishmentRatingBar.setRating(0);
+        if (currentEstablishment.getRatingValue().equals("Exempt")) {
+            holder.establishmentRatingBar.setVisibility(View.GONE);
+            holder.exemptEstablishmentTextView.setText(holder.itemView.getResources().getString(R.string.exempt_establishment_text));
+            holder.exemptEstablishmentTextView.setVisibility(View.VISIBLE);
+        } else {
+            try {
+                holder.establishmentRatingBar.setRating(Integer.parseInt(currentEstablishment.getRatingValue()));
+            } catch (NumberFormatException n) {
+                holder.establishmentRatingBar.setRating(0);
+            }
         }
         String establishmentDistance = currentEstablishment.getDistance();
         if (establishmentDistance != null) {
@@ -142,6 +148,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
         RatingBar establishmentRatingBar;
         TextView establishmentDistTextView;
         TextView establishmentFavTextView;
+        TextView exemptEstablishmentTextView;
 
 
         MyViewHolder(@NonNull View itemView) {
@@ -150,6 +157,7 @@ public class EstablishmentAdapter extends RecyclerView.Adapter<EstablishmentAdap
             establishmentRatingBar = itemView.findViewById(R.id.establishmentRatingBar);
             establishmentDistTextView = itemView.findViewById(R.id.establishmentDistTextView);
             establishmentFavTextView = itemView.findViewById(R.id.establishmentFavTextView);
+            exemptEstablishmentTextView = itemView.findViewById(R.id.exemptEstablishment);
         }
     }
 }

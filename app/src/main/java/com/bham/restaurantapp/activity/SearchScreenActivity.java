@@ -14,13 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
-import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.DeleteAllFavouritesAsyncTask;
 import com.bham.restaurantapp.background.async.RefreshDbAsyncTask;
+import com.bham.restaurantapp.background.async.SearchScreenAsyncTask;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
@@ -31,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
 import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_ID;
 import static com.bham.restaurantapp.Globals.DEFAULT_AUTHORITY_POSITION;
 import static com.bham.restaurantapp.Globals.DEFAULT_BUSINESS_TYPE_ID;
@@ -63,14 +61,11 @@ public class SearchScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_screen);
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
         sortBySpinner = findViewById(R.id.sortBySpinner);
-        sortBySpinner.setAdapter(new SimpleCursorAdapter(
+        new SearchScreenAsyncTask(
                 getApplicationContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                App.getInstance().getDb().sortOptionsDAO().getAllCursor(),
-                new String[]{"sort_option_name"},
-                new int[]{android.R.id.text1},
-                FLAG_REGISTER_CONTENT_OBSERVER
-        ));
+                sortBySpinner
+        )
+                .execute();
         if (savedInstanceState != null) {
             Log.i(TAG, "onCreate: saved instance stae is not null!");
             int sortPosition = savedInstanceState.getInt("sortPosition");
