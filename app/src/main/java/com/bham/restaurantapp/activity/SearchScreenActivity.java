@@ -3,6 +3,7 @@ package com.bham.restaurantapp.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
@@ -54,11 +55,15 @@ public class SearchScreenActivity extends AppCompatActivity {
     private int authority;
     private int maxDistanceLimit;
     private int minRating;
+    private long pauseTime;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_screen);
+        pauseTime = System.currentTimeMillis();
+        sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         establishmentSearchEditText = findViewById(R.id.searchFieldEditText);
         sortBySpinner = findViewById(R.id.sortBySpinner);
         new SearchScreenAsyncTask(
@@ -146,6 +151,15 @@ public class SearchScreenActivity extends AppCompatActivity {
             addFiltersButton.setText(
                     getString(R.string.search_filters_button_modify_filters)
             );
+        }
+        MaterialButton setPasswordButton = findViewById(R.id.openLogin);
+        if (sharedPreferences.getString("passwordHash", null) != null) {
+            setPasswordButton.setText(getString(R.string.update_password_button_text));
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("needPass", false);
+            editor.apply();
+            setPasswordButton.setText(getString(R.string.set_password_button_text));
         }
     }
 
@@ -274,7 +288,7 @@ public class SearchScreenActivity extends AppCompatActivity {
     }
 
     public void openLogin(View view) {
-        Intent i = new Intent(this, LoginScreenActivity.class);
+        Intent i = new Intent(this, ManagePasswordActivity.class);
         startActivity(i);
     }
 
@@ -294,5 +308,41 @@ public class SearchScreenActivity extends AppCompatActivity {
 
     private void requestLocPerms() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_LOCATION_PERMISSION);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (sharedPreferences.getBoolean("needPass", false) && sharedPreferences.getString("passwordHash", null) != null) {
+            Intent i = new Intent(this, LoginScreenActivity.class);
+            startActivity(i);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: Now I'm on pause");
+        pauseTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: now I'm resumed");
+        if (System.currentTimeMillis() - pauseTime > 10000) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (sharedPreferences.getString("passwordHash", null) != null) {
+                editor.putBoolean("needPass", true);
+                editor.apply();
+            }
+        }
+        if (sharedPreferences.getBoolean("needPass", true)) {
+//            // TODO: possibly toast about expired session
+            Log.i(TAG, "onResume: it's password time");
+            Intent i = new Intent(this, LoginScreenActivity.class);
+            startActivity(i);
+//        }
+        }
     }
 }

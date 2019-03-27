@@ -42,4 +42,11 @@
     <string name="favourite_flag">Favourite</string>
     <string name="get_location">Get Location</string>
     <string name="exempt_establishment_text">Exempt</string>
+    <string name="old_password_text">Old password</string>
+    <string name="new_password_text">New password</string>
+    <string name="update_password_button_text">Update password</string>
+    <string name="set_password_button_text">Set password</string>
+    <string name="enter_password_text">Enter password</string>
+    <string name="password_login_button_text">Login</string>
+    <string name="remove_password_text">Remove password</string>
 </resources>
