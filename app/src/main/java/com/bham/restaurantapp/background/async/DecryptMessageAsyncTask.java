@@ -6,7 +6,7 @@ import android.util.Log;
 import com.bham.restaurantapp.App;
 import com.bham.restaurantapp.model.db.FsaDatabase;
 import com.bham.restaurantapp.model.db.entities.EncryptedMessageEntity;
-import com.bham.restaurantapp.security.AESDecryptor3;
+import com.bham.restaurantapp.security.AESDecryptor;
 
 import java.nio.charset.StandardCharsets;
 
@@ -25,9 +25,9 @@ public class DecryptMessageAsyncTask extends AsyncTask<Long, Void, String> {
         Log.i(TAG, "doInBackground: Encrypted message id is " + longs[0]);
         EncryptedMessageEntity e =
                 db.encryptedMessageDAO().findEncryptedMessageById(longs[0]);
-        AESDecryptor3 aesDecryptor3 = new AESDecryptor3(e.salt, masterKey);
+        AESDecryptor aesDecryptor = new AESDecryptor(e.salt, masterKey);
         return new String(
-                aesDecryptor3.decrypt(e.ciphertext), StandardCharsets.UTF_8
+                aesDecryptor.decrypt(e.ciphertext), StandardCharsets.UTF_8
         );
 
     }
