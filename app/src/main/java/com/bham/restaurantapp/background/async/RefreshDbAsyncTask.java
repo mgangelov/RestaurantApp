@@ -46,6 +46,7 @@ public class RefreshDbAsyncTask extends AsyncTask<Void, Void, Void> {
 //            db.businessTypeDAO().deleteAllBusinessTypeEntities();
 //            db.regionDAO().deleteRegionEntities();
 //            db.sortOptionsDAO().deleteAllSortOptionsEntities();
+//            db.encryptedMessageDAO().deleteAllEncryptedMessageEntities();
             if (db.businessTypeDAO().countRows() == 0) {
                 Log.i(TAG, "Adding businessTypes to DB");
                 List<BusinessType> bts = fsaDataController.getBusinessTypes()

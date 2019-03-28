@@ -2,10 +2,17 @@ package com.bham.restaurantapp.model.db.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index("_id")})
+@Entity(foreignKeys = @ForeignKey(
+        entity = EstablishmentEntity.class,
+        parentColumns = "_id",
+        childColumns = "establishment_id"
+),
+        indices = {@Index("establishment_id"), @Index("_id")}
+)
 public class EncryptedMessageEntity {
     @PrimaryKey(autoGenerate = true)
     public int _id;
@@ -19,13 +26,18 @@ public class EncryptedMessageEntity {
     @ColumnInfo(name = "iv_spec", typeAffinity = ColumnInfo.BLOB)
     public byte[] ivSpec;
 
+    @ColumnInfo(name= "establishment_id")
+    public int establishmentId;
+
     public EncryptedMessageEntity(
             byte[] salt,
             byte[] ciphertext,
-            byte[] ivSpec
+            byte[] ivSpec,
+            int establishmentId
     ) {
         this.salt = salt;
         this.ciphertext = ciphertext;
         this.ivSpec = ivSpec;
+        this.establishmentId = establishmentId;
     }
 }

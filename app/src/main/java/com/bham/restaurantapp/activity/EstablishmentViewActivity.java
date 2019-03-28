@@ -1,6 +1,8 @@
 package com.bham.restaurantapp.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,12 +27,14 @@ public class EstablishmentViewActivity extends AppCompatActivity {
     private static final String TAG = "EstablishmentViewActivity";
     private EstablishmentEntity establishmentEntity;
     private MaterialButton addToFavouritesMaterialButton;
+    private MaterialButton addNoteMaterialButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_establishment_view);
         addToFavouritesMaterialButton = findViewById(R.id.addToFavouritesButton);
+        addNoteMaterialButton = findViewById(R.id.addNoteButton);
         establishmentEntity = new EstablishmentEntity(
                 getIntent().getIntExtra("fhrsId", 0),
                 getIntent().getStringExtra("businessName"),
@@ -49,7 +53,8 @@ public class EstablishmentViewActivity extends AppCompatActivity {
         new AddFavouriteEstablishmentAsyncTask(
                 getApplicationContext(),
                 addToFavouritesMaterialButton,
-                Globals.MODES.CHECK_MODE
+                addNoteMaterialButton,
+                Globals.FAVOURITE_MODES.CHECK_MODE
         ).execute(
                 establishmentEntity
         );
@@ -145,23 +150,35 @@ public class EstablishmentViewActivity extends AppCompatActivity {
             new AddFavouriteEstablishmentAsyncTask(
                     getApplicationContext(),
                     addToFavouritesMaterialButton,
-                    Globals.MODES.ADD_MODE,
+                    addNoteMaterialButton,
+                    Globals.FAVOURITE_MODES.ADD_MODE,
                     successAlert).execute(
                     establishmentEntity
             );
-            Toast.makeText(getApplicationContext(), "Added to favourites", Toast.LENGTH_LONG)
-                    .show();
         }
         if (addToFavouritesMaterialButton.getText().equals(getString(R.string.remove_favourite_establishment))) {
             Log.i(TAG, "addEstablishmentToFavourites: Removing from favourites");
             new AddFavouriteEstablishmentAsyncTask(
                     getApplicationContext(),
                     addToFavouritesMaterialButton,
-                    Globals.MODES.REMOVE_MODE,
+                    addNoteMaterialButton,
+                    Globals.FAVOURITE_MODES.REMOVE_MODE,
                     successAlert).execute(
                     establishmentEntity
             );
-            Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_LONG)
+        }
+    }
+
+    public void addNoteToFavourite(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE);
+        if (sharedPreferences.getString("passwordHash", null) != null) {
+            Intent i = new Intent(this, ManageNoteActivity.class);
+            i.putExtra("establishmentId", establishmentEntity._id);
+            Toast.makeText(getApplicationContext(), "Decrypting note", Toast.LENGTH_LONG)
+                    .show();
+            startActivity(i);
+        } else {
+            Toast.makeText(getApplicationContext(), "You need to have password set to use this functionality", Toast.LENGTH_LONG)
                     .show();
         }
     }

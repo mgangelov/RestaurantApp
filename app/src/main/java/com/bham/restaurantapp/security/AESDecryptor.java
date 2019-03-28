@@ -19,13 +19,13 @@ import javax.crypto.spec.PBEKeySpec;
 
 import static com.bham.restaurantapp.Globals.DEFAULT_KEY_GENERATION_SCHEME;
 
-public class AESDecryptor3 {
-    private static final String TAG = "AESDecryptor3";
+public class AESDecryptor {
+    private static final String TAG = "AESDecryptor";
     private byte[] iv;
     private byte[] salt;
     private SecretKey secretKey;
 
-    public AESDecryptor3(byte[] salt, String masterKey) {
+    public AESDecryptor(byte[] salt, String masterKey) {
         PBEKeySpec pbeKeySpec = new PBEKeySpec(
                 masterKey.toCharArray(),
                 salt,

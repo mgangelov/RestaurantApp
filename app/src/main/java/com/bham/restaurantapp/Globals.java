@@ -16,9 +16,14 @@ public abstract class Globals {
     public static final String DEFAULT_CIPHER_TYPE = "AES/GCM/NoPadding";
     public static final String DEFAULT_KEY_SPEC = "AES";
     public static final int DEFAULT_KEY_LENGTH = 128;
-    public enum MODES {
+    public enum FAVOURITE_MODES {
         ADD_MODE,
         REMOVE_MODE,
         CHECK_MODE
+    }
+    public enum NOTE_MODES {
+        VIEW_MODE,
+        SAVE_MODE,
+        DELETE_MODE
     }
 }

@@ -20,8 +20,8 @@ import javax.crypto.spec.PBEKeySpec;
 
 import static com.bham.restaurantapp.Globals.DEFAULT_KEY_GENERATION_SCHEME;
 
-public class AESEncryptor3 {
-    private static final String TAG = "AESEncryptor3";
+public class AESEncryptor {
+    private static final String TAG = "AESEncryptor";
     private byte[] iv;
 
     public byte[] getIv() {
@@ -35,7 +35,7 @@ public class AESEncryptor3 {
     private byte[] salt;
     private SecretKey secretKey;
 
-    public AESEncryptor3(String masterKey) {
+    public AESEncryptor(String masterKey) {
         SecureRandom secureRandom = new SecureRandom();
         salt = new byte[16];
         secureRandom.nextBytes(salt);
@@ -58,8 +58,8 @@ public class AESEncryptor3 {
         secureRandom = new SecureRandom();
         iv = new byte[12];
         secureRandom.nextBytes(iv);
-        Log.i(TAG, "AESEncryptor3: iv length is " + iv.length);
-        Log.i(TAG, "AESEncryptor3: Secret key length is " + secretKey.getEncoded().length);
+        Log.i(TAG, "AESEncryptor: iv length is " + iv.length);
+        Log.i(TAG, "AESEncryptor: Secret key length is " + secretKey.getEncoded().length);
     }
 
     public byte[] encrypt(byte[] plainText) {

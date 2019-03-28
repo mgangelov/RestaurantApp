@@ -53,4 +53,10 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="manage_proper_note_text">Manage note</string>
+    <string name="manage_note_text">Manage note</string>
+    <string name="type_note_here_text">Type note here</string>
+    <string name="remove_note_text">Remove note</string>
+    <string name="save_note_text">Save note</string>
+    <string name="need_to_set_password">You need to set password to use this functionality</string>
 </resources>

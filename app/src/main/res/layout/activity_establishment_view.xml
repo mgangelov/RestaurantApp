@@ -133,17 +133,34 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addToFavouritesButton"
+    <LinearLayout
+        android:id="@+id/favouriteTasksLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/add_to_favourites_button"
-        android:onClick="addEstablishmentToFavourites"
-        app:layout_constraintTop_toBottomOf="@id/establishmentDetailsConstraintLayout"
-        android:backgroundTint="@color/pinkFavourite"/>
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/establishmentDetailsConstraintLayout">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToFavouritesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/pinkFavourite"
+            android:onClick="addEstablishmentToFavourites"
+            android:text="@string/add_to_favourites_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addNoteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/pinkFavourite"
+            android:onClick="addNoteToFavourite"
+            android:text="@string/manage_proper_note_text"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -158,9 +175,9 @@
             android:id="@+id/goBackButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/back_to_results_button"
+            android:backgroundTint="@color/colorPrimary"
             android:onClick="goBack"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:text="@string/back_to_results_button" />
 
 
     </LinearLayout>
