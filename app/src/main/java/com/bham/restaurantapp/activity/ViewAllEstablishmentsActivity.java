@@ -1,6 +1,10 @@
 package com.bham.restaurantapp.activity;
 
+import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -96,5 +100,43 @@ public class ViewAllEstablishmentsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getPageResults();
+    }
+
+    public void showLegend(View view) {
+        AlertDialog.Builder showLegend = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        showLegend.setTitle("Establishments Legend");
+        showLegend.setMessage(
+                TextUtils.concat(
+                        Html.fromHtml("<font color='#98d4bb'>Distributors/Transporters</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#a9a9a9'>Farmers/growers</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#fffac8'>Hospitals/Childcare/Caring Premises</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#F5E2E4'>Hotel/bed & breakfast/guest house</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#EEBAB2'>Importers/Exporters</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#f58231'>Manufacturers/packers</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#F5F3E7'>Mobile caterer</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#42d4f4'>Other catering premises</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#CCD4BF'>Pub/bar/nightclub</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#bfef45'>Restaurant/Cafe/Canteen</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#fabebe'>Retailers - other</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#ffe119'>Retailers - supermarkets/hypermarkets</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#e6beff'>School/college/university</font>", Build.VERSION.SDK_INT),
+                        "\n",
+                        Html.fromHtml("<font color='#e5db9c'>Takeaway/sandwich shop</font>", Build.VERSION.SDK_INT)
+                )
+        );
+        showLegend.setPositiveButton("OK", null);
+        showLegend.show();
     }
 }

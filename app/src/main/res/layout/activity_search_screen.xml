@@ -133,17 +133,17 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/openLogin"
+            android:id="@+id/openManagePasswordButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="openLogin"
-            android:text="Open login"
+            android:onClick="openManagePassword"
             app:backgroundTint="@color/colorAccent"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteFavourites"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:onClick="deleteFavourites"
             android:text="@string/delete_favourites"
             app:backgroundTint="@color/colorAccent"/>
@@ -153,6 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="refreshRoomDB"
+            android:visibility="gone"
             android:text="@string/refresh_db_data_button"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"/>

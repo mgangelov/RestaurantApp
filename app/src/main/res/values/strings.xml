@@ -59,4 +59,6 @@
     <string name="remove_note_text">Remove note</string>
     <string name="save_note_text">Save note</string>
     <string name="need_to_set_password">You need to set password to use this functionality</string>
+    <string name="manage_password_text">Manage password</string>
+    <string name="show_legend">Show legend</string>
 </resources>

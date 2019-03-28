@@ -153,7 +153,7 @@ public class SearchScreenActivity extends AppCompatActivity {
                     getString(R.string.search_filters_button_modify_filters)
             );
         }
-        MaterialButton setPasswordButton = findViewById(R.id.openLogin);
+        MaterialButton setPasswordButton = findViewById(R.id.openManagePasswordButton);
         if (sharedPreferences.getString("passwordHash", null) != null) {
             setPasswordButton.setText(getString(R.string.update_password_button_text));
         } else {
@@ -288,7 +288,7 @@ public class SearchScreenActivity extends AppCompatActivity {
         startActivity(openFavouritesIntent);
     }
 
-    public void openLogin(View view) {
+    public void openManagePassword(View view) {
         Intent i = new Intent(this, ManagePasswordActivity.class);
         startActivity(i);
     }
@@ -300,7 +300,6 @@ public class SearchScreenActivity extends AppCompatActivity {
                 requestLocPerms();
             } else {
                 requestLocPerms();
-                locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, Looper.getMainLooper());
             }
         } else {
             locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, Looper.getMainLooper());

@@ -1,5 +1,6 @@
 package com.bham.restaurantapp.background.async;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -24,6 +26,8 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
     private WeakReference<RecyclerView> rView;
     private WeakReference<TextView> pageNumberTextView;
     private List<Boolean> isFavourites;
+    private AlertDialog.Builder noResultsAlert;
+    private WeakReference<Activity> parentActivity;
 
     public EstablishmentsAsyncTask(
             RecyclerView rView,
@@ -32,6 +36,19 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
         this.rView = new WeakReference<>(rView);
         this.pageNumberTextView = new WeakReference<>(pageNumberTextView);
         this.isFavourites = new ArrayList<>();
+    }
+
+    public EstablishmentsAsyncTask(
+            RecyclerView rView,
+            TextView pageNumberTextView,
+            AlertDialog.Builder noResultsAlert,
+            Activity parentActivity
+    ) {
+        this.rView = new WeakReference<>(rView);
+        this.pageNumberTextView = new WeakReference<>(pageNumberTextView);
+        this.isFavourites = new ArrayList<>();
+        this.noResultsAlert = noResultsAlert;
+        this.parentActivity = new WeakReference<>(parentActivity);
     }
 
     @Override
@@ -115,11 +132,20 @@ public class EstablishmentsAsyncTask extends AsyncTask<String, Void, Establishme
                 establishments.getEstablishments(),
                 isFavourites
         );
-        this.rView.get().setAdapter(establishmentAdapter);
+        if (establishments.getMeta().getItemCount() != 0) {
+            this.rView.get().setAdapter(establishmentAdapter);
 
-        String pageNumber = String.valueOf(establishments.getMeta().getPageNumber());
-        String totalPages = String.valueOf(establishments.getMeta().getTotalPages());
-        this.pageNumberTextView.get().setText(String.format("%s/%s", pageNumber, totalPages));
-        // TODO: This is when I return the results
+            String pageNumber = String.valueOf(establishments.getMeta().getPageNumber());
+            String totalPages = String.valueOf(establishments.getMeta().getTotalPages());
+            this.pageNumberTextView.get().setText(String.format("%s/%s", pageNumber, totalPages));
+
+        } else {
+            if (noResultsAlert != null) {
+                noResultsAlert
+                        .setMessage("No results found")
+                        .setOnDismissListener(dialog -> parentActivity.get().finish())
+                        .show();
+            }
+        }
     }
 }
