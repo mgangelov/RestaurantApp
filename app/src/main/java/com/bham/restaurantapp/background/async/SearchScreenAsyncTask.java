@@ -45,6 +45,7 @@ public class SearchScreenAsyncTask extends AsyncTask<Void, Void, Cursor> {
                 new int[]{android.R.id.text1},
                 FLAG_REGISTER_CONTENT_OBSERVER
         ));
+        sortBySpinner.get().setSelection(3);
 //        if (!isMaxDistanceLimitSet)
 //            sortBySpinner.get().setSelection(3);
     }
