@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bham.restaurantapp.R;
+import com.bham.restaurantapp.background.async.MassDeleteNotesAsyncTask;
+import com.bham.restaurantapp.background.async.MassReencryptNotesAsyncTask;
 import com.google.android.material.button.MaterialButton;
 
 import java.security.MessageDigest;
@@ -81,6 +83,7 @@ public class ManagePasswordActivity extends AppCompatActivity {
                             sharedPreferences.getString("passwordHash", null))
                             .equals(Arrays.toString(oldPasswordHash))
                     ) {
+                        editor.putString("oldPasswordHash", sharedPreferences.getString("passwordHash", null));
                         byte[] newPasswordHash = md.digest(
                                 newPasswordEditText.getText().toString().getBytes()
                         );
@@ -88,10 +91,11 @@ public class ManagePasswordActivity extends AppCompatActivity {
                         editor.apply();
                         Log.i(TAG, "setPassword: Password updated.");
                         Intent i = new Intent(this, SearchScreenActivity.class);
-                        Toast.makeText(getApplicationContext(), "Password updated", Toast.LENGTH_LONG)
+                        new MassReencryptNotesAsyncTask(this)
+                                .execute();
+                        Toast.makeText(getApplicationContext(), "Password updated, notes re-encrypted.", Toast.LENGTH_LONG)
                                 .show();
                         startActivity(i);
-                        // TODO: Re-encrypt all notes now
                     } else {
                         // TODO: Wrong password
                         Toast.makeText(getApplicationContext(), "Old password is wrong, try again", Toast.LENGTH_LONG)
@@ -129,10 +133,11 @@ public class ManagePasswordActivity extends AppCompatActivity {
                     editor.apply();
                     Log.i(TAG, "setPassword: Password deleted.");
                     Intent i = new Intent(this, SearchScreenActivity.class);
-                    Toast.makeText(getApplicationContext(), "Password deleted", Toast.LENGTH_LONG)
+                    new MassDeleteNotesAsyncTask(this)
+                            .execute();
+                    Toast.makeText(getApplicationContext(), "Password deleted, also removed encrypted notes", Toast.LENGTH_LONG)
                             .show();
                     startActivity(i);
-                    // TODO: Re-encrypt all notes now
                 } else {
                     // TODO: Wrong password
                     Toast.makeText(getApplicationContext(), "Old password is wrong, try again", Toast.LENGTH_LONG)

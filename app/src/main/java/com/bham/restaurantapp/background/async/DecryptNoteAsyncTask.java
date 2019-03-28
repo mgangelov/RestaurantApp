@@ -18,7 +18,7 @@ import java.util.Objects;
 
 
 public class DecryptNoteAsyncTask extends AsyncTask<Integer, Void, String> {
-    private static final String TAG = "ManageNoteAsyncTask";
+    private static final String TAG = "DecryptNoteAsyncTask";
     private WeakReference<EditText> noteContentsEditText;
     private FsaDatabase db;
     private SharedPreferences sharedPreferences;
@@ -38,9 +38,6 @@ public class DecryptNoteAsyncTask extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... integers) {
         EncryptedMessageEntity e =
                 db.encryptedMessageDAO().findEncryptedMessageByEstablishmentId(integers[0]);
-        Log.i(TAG, "doInBackground: e establishment_id is " + e.establishmentId);
-        Log.i(TAG, "doInBackground: establishment id is " );
-        Log.i(TAG, "doInBackground: rows in db: " + db.encryptedMessageDAO().countRows());
         if (sharedPreferences.getString("passwordHash", null) != null) {
             if (db.encryptedMessageDAO().countRows() != 0 && db.encryptedMessageDAO().countRows(integers[0]) != 0) {
                 AESDecryptor aesDecryptor =

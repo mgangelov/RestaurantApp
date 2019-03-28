@@ -20,7 +20,7 @@ import java.util.Objects;
 
 
 public class EncryptNoteAsyncTask extends AsyncTask<Integer, Void, Void> {
-    private static final String TAG = "ManageNoteAsyncTask";
+    private static final String TAG = "EncryptNoteAsyncTask";
     private WeakReference<EditText> noteContentsEditText;
     private FsaDatabase db;
     private SharedPreferences sharedPreferences;

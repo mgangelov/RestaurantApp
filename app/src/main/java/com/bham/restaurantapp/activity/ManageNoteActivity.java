@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.bham.restaurantapp.R;
 import com.bham.restaurantapp.background.async.DecryptNoteAsyncTask;
+import com.bham.restaurantapp.background.async.DeleteNoteAsyncTask;
 import com.bham.restaurantapp.background.async.EncryptNoteAsyncTask;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class ManageNoteActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.need_to_set_password), Toast.LENGTH_LONG)
                     .show();
         } else {
+            new DeleteNoteAsyncTask(this, noteTextEditText)
+                    .execute(establishmentId);
         }
     }
 
